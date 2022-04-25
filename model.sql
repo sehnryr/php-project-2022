@@ -37,7 +37,7 @@ CREATE TABLE specialities {
 -- Table appointments
 CREATE TABLE appointments {
     id SERIAL PRIMARY KEY,
-    userid INTEGER NOT NULL,
+    userid INTEGER,
     doctorid INTEGER NOT NULL,
     date_time DATETIME NOT NULL,
 
