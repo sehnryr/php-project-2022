@@ -10,4 +10,8 @@
         }
         return $conn;
     }
+
+    function userConnection(db, email, password){
+        
+    }
 ?>
