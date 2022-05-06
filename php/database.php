@@ -19,10 +19,11 @@
      * the protocol that other function need to read, write in the database  
      */
     function dbConnect(){
+
+        // DB_NAME, DB_SERVER, DB_PORT are variables contained in constants.php
         $dsn = 'pgsql:dbname='.DB_NAME.';host='.DB_SERVER.';port='.DB_PORT;
-        /*
-        * DB_NAME, DB_SERVER, DB_PORT are variables contained in constants.php
-        */
+        // try if it can connect to the database, if yes, return connection information,
+        // if no, displays an error code
         try{
             $conn = new PDO($dsn, DB_USER, DB_PASSWORD);
             /**
@@ -39,7 +40,8 @@
     
 
     /**
-     * 
+     * This will check in the database if the login id (here email) is present,
+     * by returning true if yes and false if it's not find
      */
     function verification($db, $id){
         $nid = strtolower($id);
@@ -88,6 +90,10 @@
         return $result;
     }
 
+
+    /**
+     * 
+     */
     function getAllAppointments($db, $id){
         $request = 'SELECT id from appointments s where  s.userid = :id';
         $statement = $db->prepare($request);
