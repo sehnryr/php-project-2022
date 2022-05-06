@@ -27,10 +27,10 @@
 
     function userConnection($db, $email, $password){
         
-        $request = 'SELECT phrase from citation c, auteur a, siecle s where c.auteurid = a.id and c.siecleid = s.id and s.numero = :siecle and a.nom = :nom';
+        $request = 'SELECT phrase from users u where  u.email = :email and u.password = :passwd';
         $statement = $db->prepare($request);
-        $statement->bindParam(':siecle', $siecle);
-        $statement->bindParam(':nom', $nom);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':passwd', $password);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
