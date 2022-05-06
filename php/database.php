@@ -10,10 +10,10 @@
         }
         return $conn;
     }
-    
+
     function verification($db, $id){
         $nid = strtolower($id);
-        $request = 'SELECT identifiant from compte c where lower(c.identifiant) = :identifiant';
+        $request = 'SELECT email from users u where lower(u.email) = :identifiant';
         $statement = $db->prepare($request);
         $statement->bindParam(':identifiant', $nid);
         $statement->execute();
