@@ -27,7 +27,7 @@
 
     function userConnection($db, $email, $password){
         
-        $request = 'SELECT phrase from users u where  u.email = :email and u.password = :passwd';
+        $request = 'SELECT id from users u where  u.email = :email and u.password = :passwd';
         $statement = $db->prepare($request);
         $statement->bindParam(':email', $email);
         $statement->bindParam(':passwd', $password);
