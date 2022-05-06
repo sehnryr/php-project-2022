@@ -37,6 +37,17 @@
         return $result;
     }
 
+    function getDoctorSpeciality($db, $id){
+        
+        $request = 'SELECT s.name from specialities s left join doctors d on d.speciality_id = s.id where  d.id = :id ';
+        $statement = $db->prepare($request);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     function getAllAppointments($db, $id){
         $request = 'SELECT id from appointments s where  s.userid = :id';
         $statement = $db->prepare($request);
