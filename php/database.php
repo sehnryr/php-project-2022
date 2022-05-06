@@ -41,7 +41,7 @@
 
     /**
      * This will check in the database if the login id (here email) is present,
-     * by returning true if yes and false if it's not find
+     * by returning true if find and false if it's not find
      */
     function verification($db, $id){
         $nid = strtolower($id);
@@ -65,7 +65,7 @@
 
 
     /**
-     * 
+     * This will provide a connection 
      */
     function userConnection($db, $email, $password){
         
