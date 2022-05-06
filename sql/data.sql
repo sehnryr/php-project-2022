@@ -32,9 +32,9 @@ INSERT INTO doctors (firstname, lastname, password, phone_number, email, postal_
 -- -- --- Populate citation table ------------
 ALTER SEQUENCE appointments_id_seq RESTART;
 INSERT INTO appointments (userid, doctorid, date_time) VALUES
-(1, 1, 2022-01-15),
-(3, 4, 2022-02-12),
-(2, 2, 2022-03-25),
-(4, 1, 2022-04-05),
-(5, 3, 2022-05-08),
-(2, 4, 2022-06-19);
+(1, 1, '2022-01-15'),
+(3, 4, '2022-02-12'),
+(2, 2, '2022-03-25'),
+(4, 1, '2022-04-05'),
+(5, 3, '2022-05-08'),
+(2, 4, '2022-06-19');
