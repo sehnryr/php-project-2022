@@ -11,7 +11,7 @@
         return $conn;
     }
 
-    function userConnection(db, email, password){
+    function userConnection($db, $email, $password){
         
         $request = 'SELECT phrase from citation c, auteur a, siecle s where c.auteurid = a.id and c.siecleid = s.id and s.numero = :siecle and a.nom = :nom';
         $statement = $db->prepare($request);
