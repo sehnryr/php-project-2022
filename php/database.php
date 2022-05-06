@@ -37,5 +37,13 @@
         return $result;
     }
 
-    
+    function getAllAppointments($db, $id){
+        $request = 'SELECT id from appointments s where  s.userid = :id';
+        $statement = $db->prepare($request);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
 ?>
