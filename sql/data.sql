@@ -1,6 +1,6 @@
 DELETE FROM appointments;
 DELETE FROM doctors;
-DELETE FROM specialities;
+DELETE FROM specialties;
 DELETE FROM users;
 
 -- --- Populate auteur table ------------
@@ -12,9 +12,9 @@ INSERT INTO users (lastname, firstname, password, phone_number, email) VALUES
 ('Bernard', 'Tristan', '1234', '0612345678', 'tb@test.com'),
 ('de La Fontaine', 'Jean', '1234', '0612345678', 'jf@test.com');
 
--- --- Populate specialities table ------
-ALTER SEQUENCE specialities_id_seq RESTART;
-INSERT INTO specialities (name) VALUES
+-- --- Populate specialties table ------
+ALTER SEQUENCE specialties_id_seq RESTART;
+INSERT INTO specialties (name) VALUES
 ('Généraliste'),
 ('Esthéticien-ne'),
 ('Urologue'),
@@ -23,7 +23,7 @@ INSERT INTO specialities (name) VALUES
 
 -- --- Populate siecle table ------------
 ALTER SEQUENCE doctors_id_seq RESTART;
-INSERT INTO doctors (firstname, lastname, password, phone_number, email, postal_code, speciality_id) VALUES
+INSERT INTO doctors (firstname, lastname, password, phone_number, email, postal_code, specialty_id) VALUES
 ('Mask', 'Masochiste', '1234', '0612345678', 'mm@test.com', 44000, 2),
 ('Poney', 'Play', '1234', '0612345678', 'pp@test.com', 44000, 3),
 ('Dominique', 'Strauss-Kahn', '1234', '0612345678', 'dsk@test.com', 44000, 4),

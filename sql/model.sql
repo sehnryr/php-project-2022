@@ -13,8 +13,8 @@ CREATE TABLE users (
     email VARCHAR(64) NOT NULL
 );
 
--- Table specialities
-CREATE TABLE specialities (
+-- Table specialties
+CREATE TABLE specialties (
     id SERIAL PRIMARY KEY,
     name VARCHAR(64) NOT NULL
 );
@@ -28,9 +28,9 @@ CREATE TABLE doctors (
     phone_number VARCHAR(10) NOT NULL,
     email VARCHAR(64) NOT NULL,
     postal_code NUMERIC(5,0) NOT NULL,
-    speciality_id INTEGER NOT NULL,
+    specialty_id INTEGER NOT NULL,
 
-    FOREIGN KEY(speciality_id) REFERENCES specialities(id)
+    FOREIGN KEY(specialty_id) REFERENCES specialties(id)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
