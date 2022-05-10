@@ -8,7 +8,7 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     firstname VARCHAR(64) NOT NULL,
     lastname VARCHAR(64) NOT NULL,
-    password VARCHAR(64) NOT NULL,
+    passwd VARCHAR(64) NOT NULL,
     phone_number VARCHAR(10) NOT NULL, -- Google says to never store phone numbers as numeric data
     email VARCHAR(64) NOT NULL
 );
@@ -24,7 +24,7 @@ CREATE TABLE doctors (
     id SERIAL PRIMARY KEY,
     firstname VARCHAR(64) NOT NULL,
     lastname VARCHAR(64) NOT NULL,
-    password VARCHAR(64) NOT NULL,
+    passwd VARCHAR(64) NOT NULL,
     phone_number VARCHAR(10) NOT NULL,
     email VARCHAR(64) NOT NULL,
     postal_code NUMERIC(5,0) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE appointments (
     id SERIAL PRIMARY KEY,
     userid INTEGER,
     doctorid INTEGER NOT NULL,
-    date_time DATE NOT NULL,
+    date_time TIMESTAMP NOT NULL,
 
     FOREIGN KEY(userid) REFERENCES users(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
