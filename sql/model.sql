@@ -1,3 +1,13 @@
+/*******************************************************************************
+Create Date:    2022-04-25
+Author:         Maël Grellier Neau <mael.grelneau@gmail.com>
+Author:         Maxence Laurent <nano0@duck.com>
+Author:         Youn Mélois <youn@melois.dev>
+Description:    Creates the database tables and relations.
+Usage:          psql -U postgres -d doctolibertain -a -f model.sql
+                https://stackoverflow.com/a/23992045/12619942
+*******************************************************************************/
+
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS doctors CASCADE;
 DROP TABLE IF EXISTS specialties CASCADE;

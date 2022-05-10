@@ -1,9 +1,19 @@
+/*******************************************************************************
+Create Date:    2022-05-06
+Author:         Maël Grellier Neau <mael.grelneau@gmail.com>
+Author:         Maxence Laurent <nano0@duck.com>
+Author:         Youn Mélois <youn@melois.dev>
+Description:    Populates the tables of the database.
+Usage:          psql -U postgres -d doctolibertain -a -f data.sql
+                https://stackoverflow.com/a/23992045/12619942
+*******************************************************************************/
+
 DELETE FROM appointments;
 DELETE FROM doctors;
 DELETE FROM specialties;
 DELETE FROM users;
 
--- --- Populate auteur table ------------
+-- Populate auteur table
 ALTER SEQUENCE users_id_seq RESTART;
 INSERT INTO users (lastname, firstname, password, phone_number, email) VALUES
 ('de Montesquieu', 'Charles', '1234', '0612345678', 'cm@test.com'),
@@ -12,7 +22,7 @@ INSERT INTO users (lastname, firstname, password, phone_number, email) VALUES
 ('Bernard', 'Tristan', '1234', '0612345678', 'tb@test.com'),
 ('de La Fontaine', 'Jean', '1234', '0612345678', 'jf@test.com');
 
--- --- Populate specialties table ------
+-- Populate specialties table
 ALTER SEQUENCE specialties_id_seq RESTART;
 INSERT INTO specialties (name) VALUES
 ('Généraliste'),
@@ -21,7 +31,7 @@ INSERT INTO specialties (name) VALUES
 ('Kinésithérapeute'),
 ('Podologue');
 
--- --- Populate siecle table ------------
+-- Populate siecle table
 ALTER SEQUENCE doctors_id_seq RESTART;
 INSERT INTO doctors (firstname, lastname, password, phone_number, email, postal_code, specialty_id) VALUES
 ('Mask', 'Masochiste', '1234', '0612345678', 'mm@test.com', 44000, 2),
@@ -29,7 +39,7 @@ INSERT INTO doctors (firstname, lastname, password, phone_number, email, postal_
 ('Dominique', 'Strauss-Kahn', '1234', '0612345678', 'dsk@test.com', 44000, 4),
 ('Marc', 'Dutroux', '1234', '0612345678', 'md@test.com', 44000, 1);
 
--- -- --- Populate citation table ------------
+-- Populate citation table
 ALTER SEQUENCE appointments_id_seq RESTART;
 INSERT INTO appointments (userid, doctorid, date_time) VALUES
 (1, 1, '2022-01-15'),
