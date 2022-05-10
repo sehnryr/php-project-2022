@@ -1,106 +1,134 @@
 <?php
+
+/**
+ * PHP version 8.1.0
+ * 
+ * @author Maël Grellier Neau <mael.grelneau@gmail.com>
+ * @author Maxence Laurent <nano0@duck.com>
+ * @author Youn Mélois <youn@melois.dev>
+ */
+
+
+/**
+ * Includes required constants to connect to the database.
+ */
+require_once 'constants.php';
+
+/**
+ * Collection of methods to communicate with the database.
+ */
+class Database
+{
+    protected $PDO;
+
     /**
-     * Main file with main function
-     * @copyright TheBoysCompany
+     * Connect to the PostgreSQL database.
      * 
+     * @throws PDOException Error thrown if the connection to 
+     *                      the database failed.
      */
+    public function __construct()
+    {
+        $db_name = DB_NAME;
+        $db_server = DB_SERVER;
+        $db_port = DB_PORT;
 
+        $dsn = "pgsql:dbname={$db_name};host={$db_server};port={$db_port}";
 
-    /**
-     * This line will include the file "constants.php" containing all 
-     * the differents variables to connect to the data base like 
-     * user-name, password, ip of the server, ...
-     */
-    include 'constants.php';
-
-
-    /**
-     * This function is used to open a session from the database and return 
-     * the protocol that other function need to read, write in the database  
-     */
-    function dbConnect(){
-
-        // DB_NAME, DB_SERVER, DB_PORT are variables contained in constants.php
-        $dsn = 'pgsql:dbname='.DB_NAME.';host='.DB_SERVER.';port='.DB_PORT;
-        // try if it can connect to the database, if yes, return connection information,
-        // if no, displays an error code
-        try{
-            $conn = new PDO($dsn, DB_USER, DB_PASSWORD);
-            /**
-             * try if it can connect to the database
-             */
-        } catch (PDOException $e){
-            echo 'Connexion échouée : ' . $e->getMessage();
-            /**
-             * if the connection is not granted or they're is an error, it print an error message
-             */
-        }
-        return $conn;
+        $this->PDO = new PDO($dsn, DB_USER, DB_PASSWORD);
     }
-    
 
     /**
-     * This will check in the database if the login id (here email) is present,
-     * by returning true if find and false if it's not find
+     * Checks if user exists in the database by testing its unique email.
+     * 
+     * @param string $email
+     * 
+     * @return bool
      */
-    function verification($db, $id){
-        $nid = strtolower($id);
-        $request = 'SELECT identifiant from compte c where lower(c.identifiant) = :identifiant';
-        /**
-         * the lower(...) is used for transform all the uppercase in the identifiant in lowercase
-         */
-        $statement = $db->prepare($request);
-        $statement->bindParam(':identifiant', $nid);
+    public function userExists(string $email): bool
+    {
+        $email = strtolower($email);
+
+        $request = 'SELECT email FROM users 
+                        WHERE email = :email';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
         $statement->execute();
+
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        /**
-         * 
-         */
-        if(empty($result)){
-            return false;
-        }else{
-            return true;
-        }
+
+        return !empty($result);
     }
 
-
     /**
-     * This will provide a connection 
+     * Connects the user by returning its unique id if the 
+     * credentials are valid.
+     * 
+     * @param string $email
+     * @param string $password
+     * 
+     * @return int the unique id of the user.
      */
-    function userConnection($db, $email, $password){
-        
-        $request = 'SELECT id from users u where  u.email = :email and u.password = :passwd';
-        $statement = $db->prepare($request);
+    public function connectUser(string $email, string $password): int
+    {
+        $email = strtolower($email);
+
+        $request = 'SELECT id FROM users 
+                        WHERE email = :email 
+                        AND passwd = :passwd';
+
+        $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
         $statement->bindParam(':passwd', $password);
         $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result;
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return (int) $result->id;
     }
-
-    function getDoctorSpeciality($db, $id){
-        
-        $request = 'SELECT s.name from specialities s left join doctors d on d.speciality_id = s.id where  d.id = :id ';
-        $statement = $db->prepare($request);
-        $statement->bindParam(':id', $id);
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
-    }
-
 
     /**
+     * Gets the name of the specialty of a doctor.
      * 
+     * @param int $id
+     * 
+     * @return string the specialty's name.
      */
-    function getAllAppointments($db, $id){
-        $request = 'SELECT id from appointments s where  s.userid = :id';
-        $statement = $db->prepare($request);
+    public function getDoctorSpecialty(int $id): string
+    {
+        $request = 'SELECT s.name FROM specialties s 
+                        LEFT JOIN doctors d 
+                        ON s.id = d.specialty_id 
+                        WHERE d.if = :id';
+
+        $statement = $this->PDO->prepare($request);
         $statement->bindParam(':id', $id);
         $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return $result->name;
+    }
+
+    /**
+     * Gets all the appointments associated to a user.
+     * 
+     * @param int $id
+     * 
+     * @return mixed TODO
+     */
+    public function getAllAppointments(int $id): mixed
+    {
+        $request = 'SELECT id FROM appointments 
+                        WHERE userid = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
     }
-?>
+}
