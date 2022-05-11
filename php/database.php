@@ -76,7 +76,7 @@ class Database
 
         $request = 'SELECT id FROM users 
                         WHERE email = :email 
-                        AND passwd = :passwd';
+                        AND password = :passwd';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
@@ -86,6 +86,28 @@ class Database
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
         return (int) $result->id;
+    }
+
+    /**
+    * Create an user in the database and return a bool to result
+    *
+    * @param string $fname first name
+    * @param string $lname last name
+    * @param string $password
+    * @param string $phonenb phone number
+    * @param string $email 
+    *
+    */
+    public function createUser(string $fname, string $lname, string $password, string $phonenb, string $email){
+        $request = 'INSERT INTO users (firstname, lastname, password, phone_number, email) VALUES (:fn, :ln, :pass, :pnb, :mail)';
+    
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':fn', $fname);
+        $statement->bindParam(':ln', $fname);
+        $statement->bindParam(':pass', $password);
+        $statement->bindParam(':pnb', $phonenb);
+        $statement->bindParam(':mail', $email);
+        $statement->execute();
     }
 
     /**
