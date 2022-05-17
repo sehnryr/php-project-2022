@@ -15,7 +15,7 @@ DELETE FROM users;
 
 -- Populate auteur table
 ALTER SEQUENCE users_id_seq RESTART;
-INSERT INTO users (lastname, firstname, password, phone_number, email) VALUES
+INSERT INTO users (lastname, firstname, passwd, phone_number, email) VALUES
 ('de Montesquieu', 'Charles', '1234', '0612345678', 'cm@test.com'),
 ('Hugo', 'Victor', '1234', '0612345678', 'vh@test.com'),
 ('Marx', 'Karl', '1234', '0612345678', 'km@test.com'),
@@ -33,7 +33,7 @@ INSERT INTO specialties (name) VALUES
 
 -- Populate siecle table
 ALTER SEQUENCE doctors_id_seq RESTART;
-INSERT INTO doctors (firstname, lastname, password, phone_number, email, postal_code, specialty_id) VALUES
+INSERT INTO doctors (firstname, lastname, passwd, phone_number, email, postal_code, specialty_id) VALUES
 ('Mask', 'Masochiste', '1234', '0612345678', 'mm@test.com', 44000, 2),
 ('Poney', 'Play', '1234', '0612345678', 'pp@test.com', 44000, 3),
 ('Dominique', 'Strauss-Kahn', '1234', '0612345678', 'dsk@test.com', 44000, 4),
