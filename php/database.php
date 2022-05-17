@@ -89,18 +89,19 @@ class Database
     }
 
     /**
-    * Create an user in the database and return a bool to result
-    *
-    * @param string $fname first name
-    * @param string $lname last name
-    * @param string $password
-    * @param string $phonenb phone number
-    * @param string $email 
-    *
-    */
-    public function createUser(string $fname, string $lname, string $password, string $phonenb, string $email){
+     * Create an user in the database and return a bool to result
+     *
+     * @param string $fname first name
+     * @param string $lname last name
+     * @param string $password
+     * @param string $phonenb phone number
+     * @param string $email 
+     *
+     */
+    public function createUser(string $fname, string $lname, string $password, string $phonenb, string $email)
+    {
         $request = 'INSERT INTO users (firstname, lastname, password, phone_number, email) VALUES (:fn, :ln, :pass, :pnb, :mail)';
-    
+
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':fn', $fname);
         $statement->bindParam(':ln', $fname);
@@ -108,6 +109,25 @@ class Database
         $statement->bindParam(':pnb', $phonenb);
         $statement->bindParam(':mail', $email);
         $statement->execute();
+    }
+
+    /**
+     * Get all the info from doctors and their specialties.
+     * 
+     * @return mixed TODO
+     */
+    public function getDoctorsAndSpecialties(): mixed
+    {
+        $request = 'SELECT * FROM doctors d
+                        LEFT JOIN specialties s
+                        ON d.specialty_id = s.id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
     }
 
     /**
