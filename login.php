@@ -30,7 +30,7 @@ if (isset($_POST['login'])) {
 
 <form method="post">
 	<label for="emailLogin">Email</label>
-	<input type="text" id="emailLogin" name="emailLogin" pattern=".+" required>
+	<input type="text" id="emailLogin" name="emailLogin" pattern=".{5,64}" required>
 	<label for="passwordLogin">Password</label>
 	<input type="password" id="passwordLogin" name="passwordLogin" pattern=".+" required>
 	<button type="submit" name="login">Login</button>
