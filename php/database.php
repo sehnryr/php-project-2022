@@ -15,6 +15,11 @@
 require_once 'constants.php';
 
 /**
+ * Includes a collection of custom exceptions.
+ */
+require_once 'exceptions.php';
+
+/**
  * Collection of methods to communicate with the database.
  */
 class Database
@@ -67,11 +72,13 @@ class Database
      * 
      * @param string $email
      * @param string $password
-     * 
-     * @return int the unique id of the user.
+     * @param int $session_expire The lifetime of the session cookie in seconds.
      */
-    public function connectUser(string $email, string $password): int
-    {
+    public function connectUser(
+        string $email,
+        string $password,
+        int $session_expire = 60 * 60 * 4 // 4 hours in seconds
+    ): void {
         $email = strtolower($email);
 
         $request = 'SELECT id FROM users 
@@ -85,7 +92,15 @@ class Database
 
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
-        return (int) $result->id;
+        if (!$result) {
+            throw new AuthenticationException('Authentication failed.');
+        }
+
+        setcookie(
+            'docto_session',
+            hash('sha256', $email . $password),
+            time() + $session_expire
+        );
     }
 
     /**
