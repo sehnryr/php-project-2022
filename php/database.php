@@ -76,7 +76,7 @@ class Database
 
         $request = 'SELECT id FROM users 
                         WHERE email = :email 
-                        AND password = :passwd';
+                        AND passwd = :passwd';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
@@ -98,9 +98,15 @@ class Database
      * @param string $email 
      *
      */
-    public function createUser(string $fname, string $lname, string $password, string $phonenb, string $email)
-    {
-        $request = 'INSERT INTO users (firstname, lastname, password, phone_number, email) VALUES (:fn, :ln, :pass, :pnb, :mail)';
+    public function createUser(
+        string $fname,
+        string $lname,
+        string $password,
+        string $phonenb,
+        string $email
+    ) {
+        $request = 'INSERT INTO users (firstname, lastname, passwd, phone_number, email) 
+                        VALUES (:fn, :ln, :pass, :pnb, :mail)';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':fn', $fname);
