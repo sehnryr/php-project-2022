@@ -72,7 +72,7 @@ class Database
      * 
      * @param string $email
      * @param string $password
-     * @param int $session_expire The lifetime of the session cookie in seconds.
+     * @param int $session_expire (optional) The lifetime of the session cookie in seconds.
      */
     public function connectUser(
         string $email,
@@ -81,26 +81,53 @@ class Database
     ): void {
         $email = strtolower($email);
 
-        $request = 'SELECT id FROM users 
-                        WHERE email = :email 
-                        AND passwd = :passwd';
+        $request = 'SELECT password_hash FROM users 
+                        WHERE email = :email';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
-        $statement->bindParam(':passwd', $password);
         $statement->execute();
 
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
-        if (!$result) {
+        if (!$result || !password_verify($password, $result->password_hash)) {
             throw new AuthenticationException('Authentication failed.');
         }
 
-        setcookie(
-            'docto_session',
-            hash('sha256', $email . $password),
-            time() + $session_expire
-        );
+        $session_hash = hash('sha256', $email . $password . time());
+
+        $request = 'UPDATE users SET session_hash = :session_hash
+                        WHERE email = :email';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':session_hash', $email);
+        $statement->execute();
+
+        setcookie('docto_session', $session_hash, time() + $session_expire);
+    }
+
+    /**
+     * Disconnects the current user by resetting the session hash stored in the
+     * database.
+     * 
+     * @param string $email
+     * @param string $session_hash
+     */
+    public function disconnectUser(string $email, string $session_hash): void
+    {
+        $email = strtolower($email);
+
+        $request = 'UPDATE users SET session_hash = NULL
+                        WHERE email = :email
+                        AND session_hash = :session_hash';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':session_hash', $session_hash);
+        $statement->execute();
+
+        setcookie('docto_session', '', time() - 3600);
     }
 
     /**

@@ -15,12 +15,12 @@ DELETE FROM users;
 
 -- Populate auteur table
 ALTER SEQUENCE users_id_seq RESTART;
-INSERT INTO users (lastname, firstname, passwd, phone_number, email) VALUES
-('de Montesquieu', 'Charles', '1234', '0612345678', 'cm@test.com'),
-('Hugo', 'Victor', '1234', '0612345678', 'vh@test.com'),
-('Marx', 'Karl', '1234', '0612345678', 'km@test.com'),
-('Bernard', 'Tristan', '1234', '0612345678', 'tb@test.com'),
-('de La Fontaine', 'Jean', '1234', '0612345678', 'jf@test.com');
+INSERT INTO users (lastname, firstname, password_hash, phone_number, email) VALUES
+('de Montesquieu', 'Charles', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'cm@test.com'),
+('Hugo', 'Victor', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'vh@test.com'),
+('Marx', 'Karl', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'km@test.com'),
+('Bernard', 'Tristan', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'tb@test.com'),
+('de La Fontaine', 'Jean', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'jf@test.com');
 
 -- Populate specialties table
 ALTER SEQUENCE specialties_id_seq RESTART;
@@ -33,11 +33,11 @@ INSERT INTO specialties (name) VALUES
 
 -- Populate siecle table
 ALTER SEQUENCE doctors_id_seq RESTART;
-INSERT INTO doctors (firstname, lastname, passwd, phone_number, email, postal_code, specialty_id) VALUES
-('Mask', 'Masochiste', '1234', '0612345678', 'mm@test.com', 44000, 2),
-('Poney', 'Play', '1234', '0612345678', 'pp@test.com', 44000, 3),
-('Dominique', 'Strauss-Kahn', '1234', '0612345678', 'dsk@test.com', 44000, 4),
-('Marc', 'Dutroux', '1234', '0612345678', 'md@test.com', 44000, 1);
+INSERT INTO doctors (firstname, lastname, password_hash, phone_number, email, postal_code, specialty_id) VALUES
+('Mask', 'Masochiste', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'mm@test.com', 44000, 2),
+('Poney', 'Play', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'pp@test.com', 44000, 3),
+('Dominique', 'Strauss-Kahn', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'dsk@test.com', 44000, 4),
+('Marc', 'Dutroux', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'md@test.com', 44000, 1);
 
 -- Populate citation table
 ALTER SEQUENCE appointments_id_seq RESTART;
