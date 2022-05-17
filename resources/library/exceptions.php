@@ -14,3 +14,10 @@
 class AuthenticationException extends Exception
 {
 }
+
+/**
+ * This will be thrown when trying to create a user with a duplicate email.
+ */
+class DuplicateEmailException extends Exception
+{
+}

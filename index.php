@@ -1,7 +1,6 @@
 <?php
-    if(!isset($_COOKIE['docto']['email'])){
-        setcookie("docto", "email", time()+5*60);
-    }
 
-    include 'DoctoLibertain.html';
-?>
+require_once 'resources/config.php';
+require_once LIBRARY_PATH . '/common.php';
+
+redirect('login.php');

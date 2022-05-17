@@ -8,16 +8,8 @@
  * @author Youn Mélois <youn@melois.dev>
  */
 
-
-/**
- * Includes required constants to connect to the database.
- */
-require_once 'constants.php';
-
-/**
- * Includes a collection of custom exceptions.
- */
-require_once 'exceptions.php';
+require_once 'config.php';
+require_once 'library/exceptions.php';
 
 /**
  * Collection of methods to communicate with the database.
@@ -79,6 +71,10 @@ class Database
         string $password,
         int $session_expire = 60 * 60 * 4 // 4 hours in seconds
     ): void {
+        if ($this->tryConnectUser()) {
+            return;
+        }
+
         $email = strtolower($email);
 
         $request = 'SELECT password_hash FROM users 
@@ -101,29 +97,53 @@ class Database
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
-        $statement->bindParam(':session_hash', $email);
+        $statement->bindParam(':session_hash', $session_hash);
         $statement->execute();
 
         setcookie('docto_session', $session_hash, time() + $session_expire);
     }
 
     /**
-     * Disconnects the current user by resetting the session hash stored in the
-     * database.
+     * Tries to connect the user with its session cookie if valid.
      * 
-     * @param string $email
-     * @param string $session_hash
+     * @return bool True if the connection was successful.
      */
-    public function disconnectUser(string $email, string $session_hash): void
+    public function tryConnectUser(): bool
     {
-        $email = strtolower($email);
+        if (!isset($_COOKIE['docto_session'])) {
+            return false;
+        }
 
-        $request = 'UPDATE users SET session_hash = NULL
-                        WHERE email = :email
-                        AND session_hash = :session_hash';
+        $session_hash = $_COOKIE['docto_session'];
+
+        $request = 'SELECT * FROM users
+                        WHERE session_hash = :session_hash';
 
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':email', $email);
+        $statement->bindParam(':session_hash', $session_hash);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return $result != NULL;
+    }
+
+    /**
+     * Disconnects the current user by resetting the session hash stored in the
+     * database.
+     */
+    public function disconnectUser(): void
+    {
+        if (!isset($_COOKIE['docto_session'])) {
+            return;
+        }
+
+        $session_hash = $_COOKIE['docto_session'];
+
+        $request = 'UPDATE users SET session_hash = NULL
+                        WHERE session_hash = :session_hash';
+
+        $statement = $this->PDO->prepare($request);
         $statement->bindParam(':session_hash', $session_hash);
         $statement->execute();
 
@@ -131,31 +151,79 @@ class Database
     }
 
     /**
+     * Gets the general infos of a user
+     * 
+     * @return array Array of firstname, lastname, phone number and email.
+     */
+    public function getUserInfo(): ?array
+    {
+        if (!$this->tryConnectUser()) {
+            return NULL; // send empty array if couldn't connect.
+        }
+
+        $session_hash = $_COOKIE['docto_session'];
+
+        $request = 'SELECT firstname, lastname, phone_number, email FROM users
+                        WHERE session_hash = :session_hash';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':session_hash', $session_hash);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return [
+            'firstname' => $result->firstname,
+            'lastname' => $result->lastname,
+            'phone_number' => $result->phone_number,
+            'email' => $result->email
+        ];
+    }
+
+    /**
      * Create an user in the database and return a bool to result
      *
-     * @param string $fname first name
-     * @param string $lname last name
-     * @param string $password
-     * @param string $phonenb phone number
+     * @param string $firstname first name
+     * @param string $lastname last name
      * @param string $email 
+     * @param string $phoneNumber phone number
+     * @param string $password
      *
      */
     public function createUser(
-        string $fname,
-        string $lname,
-        string $password,
-        string $phonenb,
-        string $email
+        string $firstname,
+        string $lastname,
+        string $email,
+        string $phoneNumber,
+        string $password
     ) {
-        $request = 'INSERT INTO users (firstname, lastname, passwd, phone_number, email) 
-                        VALUES (:fn, :ln, :pass, :pnb, :mail)';
+        // test if user already exists
+        $request = 'SELECT * FROM users
+                        WHERE email = :email';
 
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':fn', $fname);
-        $statement->bindParam(':ln', $fname);
-        $statement->bindParam(':pass', $password);
-        $statement->bindParam(':pnb', $phonenb);
-        $statement->bindParam(':mail', $email);
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        if ($result) {
+            throw new DuplicateEmailException('Email already exists.');
+        }
+
+        $password_hash = password_hash($password, PASSWORD_BCRYPT);
+
+
+        $request = 'INSERT INTO users 
+                        (firstname, lastname, password_hash, phone_number, email)
+                        VALUES (:firstname, :lastname, :password_hash, :phone_number, :email)';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':firstname', $firstname);
+        $statement->bindParam(':lastname', $lastname);
+        $statement->bindParam(':password_hash', $password_hash);
+        $statement->bindParam(':phone_number', $phoneNumber);
+        $statement->bindParam(':email', $email);
         $statement->execute();
     }
 
