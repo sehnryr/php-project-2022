@@ -52,8 +52,8 @@ class Database
     ): void {
         try {
             $this->tryConnectUser();
-        } catch (AuthenticationException $e) {
             return;
+        } catch (AuthenticationException $e) {
         }
 
         $email = strtolower($email);
@@ -113,7 +113,7 @@ class Database
 
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
-        if ($result == NULL) {
+        if (empty($result)) {
             throw new AuthenticationException('Authentication failed.');
         }
     }
