@@ -69,6 +69,7 @@ class Database
 
         $session_hash = hash('sha256', $email . $password . time());
 
+        // Set session hash on the user
         $request = 'UPDATE users SET session_hash = :session_hash
                         WHERE email = :email';
 
@@ -77,7 +78,13 @@ class Database
         $statement->bindParam(':session_hash', $session_hash);
         $statement->execute();
 
-        setcookie('docto_session', $session_hash, time() + $session_expire);
+        if ($session_expire == 0) {
+            $cookie_expire = 0;
+        } else {
+            $cookie_expire = time() + $session_expire;
+        }
+
+        setcookie('docto_session', $session_hash, $cookie_expire);
     }
 
     /**
