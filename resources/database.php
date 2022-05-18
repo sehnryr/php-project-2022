@@ -156,12 +156,7 @@ class Database
 
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
-        return [
-            'firstname' => $result->firstname,
-            'lastname' => $result->lastname,
-            'phone_number' => $result->phone_number,
-            'email' => $result->email
-        ];
+        return (array) $result;
     }
 
     /**
