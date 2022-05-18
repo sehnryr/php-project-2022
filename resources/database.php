@@ -36,29 +36,6 @@ class Database
     }
 
     /**
-     * Checks if user exists in the database by testing its unique email.
-     * 
-     * @param string $email
-     * 
-     * @return bool
-     */
-    public function userExists(string $email): bool
-    {
-        $email = strtolower($email);
-
-        $request = 'SELECT email FROM users 
-                        WHERE email = :email';
-
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':email', $email);
-        $statement->execute();
-
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        return !empty($result);
-    }
-
-    /**
      * Connects the user by returning its unique id if the 
      * credentials are valid.
      * 
