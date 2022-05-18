@@ -42,13 +42,17 @@ class Database
      * @param string $email
      * @param string $password
      * @param int $session_expire (optional) The lifetime of the session cookie in seconds.
+     * 
+     * @throws AuthenticationException If the authentication failed.
      */
     public function connectUser(
         string $email,
         string $password,
         int $session_expire = 60 * 60 * 4 // 4 hours in seconds
     ): void {
-        if ($this->tryConnectUser()) {
+        try {
+            $this->tryConnectUser();
+        } catch (AuthenticationException $e) {
             return;
         }
 
@@ -90,9 +94,9 @@ class Database
     /**
      * Tries to connect the user with its session cookie if valid.
      * 
-     * @return bool True if the connection was successful.
+     * @throws AuthenticationException If the authentication failed.
      */
-    public function tryConnectUser(): bool
+    public function tryConnectUser(): void
     {
         if (!isset($_COOKIE['docto_session'])) {
             return false;
@@ -109,7 +113,9 @@ class Database
 
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
-        return $result != NULL;
+        if ($result == NULL) {
+            throw new AuthenticationException('Authentication failed.');
+        }
     }
 
     /**
@@ -141,8 +147,10 @@ class Database
      */
     public function getUserInfo(): ?array
     {
-        if (!$this->tryConnectUser()) {
-            return NULL; // send empty array if couldn't connect.
+        try {
+            $this->tryConnectUser();
+        } catch (AuthenticationException $e) {
+            return NULL;
         }
 
         $session_hash = $_COOKIE['docto_session'];
