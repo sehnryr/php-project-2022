@@ -99,7 +99,7 @@ class Database
     public function tryConnectUser(): void
     {
         if (!isset($_COOKIE['docto_session'])) {
-            return false;
+            throw new AuthenticationException('Authentication failed.');
         }
 
         $session_hash = $_COOKIE['docto_session'];
