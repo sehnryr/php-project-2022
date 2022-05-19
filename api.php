@@ -52,7 +52,7 @@ class APIErrors
 		http_response_code(400);
 		die(json_encode(array(
 			'error' => 'invalid_request',
-			'error_description' => 'The request is missing a parameter, uses an unsupported parameter or repeats a parameter.'
+			'error_description' => 'The request is missing a parameter, uses an unsupported parameter, uses an invalid parameter or repeats a parameter.'
 		)));
 	}
 }
@@ -91,6 +91,28 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		http_response_code(200);
 		die(json_encode(array(
 			'message' => 'Authorization code delete successfully.'
+		)));
+		break;
+	case 'register' . 'POST':
+		$firstname = $_POST['firstname'];
+		$lastname = $_POST['lastname'];
+		$email = $_POST['email'];
+		$phoneNumber = $_POST['phone'];
+		$password = $_POST['password'];
+
+		try {
+			$db->createUser($firstname, $lastname, $email, $phoneNumber, $password);
+		} catch (Exception $_) {
+			APIErrors::invalidRequest();
+		}
+
+		$access_token = $db->getUserAccessToken($email, $password);
+
+		http_response_code(200);
+		die(json_encode(array(
+			'access_token' => $access_token,
+			'created_at' => time(),
+			'token_type' => 'bearer'
 		)));
 		break;
 	case 'user' . 'GET':
