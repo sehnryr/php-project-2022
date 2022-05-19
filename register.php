@@ -17,10 +17,8 @@ if (isset($_POST['register'])) {
 		$db->createUser($firstname, $lastname, $email, $phoneNumber, $password);
 		$db->connectUser($email, $password);
 		redirect('user.php');
-	} catch (AuthenticationException $e) {
-		return;
-	} catch (DuplicateEmailException $e) {
-		return;
+	} catch (AuthenticationException $_) {
+	} catch (DuplicateEmailException $_) {
 	}
 }
 ?>
