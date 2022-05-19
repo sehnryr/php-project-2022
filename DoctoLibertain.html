@@ -11,9 +11,9 @@
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav id="test" class="navbar navbar-expand-lg" style="background-color: #107ACA;">
         <div class="container-fluid">
-          <a class="navbar-brand" id="website_name" href="DoctoLibertain.html" style="font-family: 'Fuggles', cursive;font-size: 45px;">DoctoLibertain</a>
+          <a class="navbar-brand" id="website_name" href="DoctoLibertain.html" style="font-family: 'Fuggles', cursive;font-size: 45px; color: white;">DoctoLibertain</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -26,16 +26,16 @@
                     </div>
                 </a>
               </li>
-              <div class="nav-item">
+              <!-- <div class="nav-item">
                 <img  width="16" height="16" src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg" alt="Person">
-              </div>
+              </div> -->
               <li class="nav-item">
                 <a class="nav-link container-fluid" href="DoctoLogin.html">
                     <div class="">
                       <div class="fw-bolder link-light">
                         Se connecter
                       </div>
-                      <div style="opacity: 0.7; font-size: 12px;">
+                      <div style="opacity: 0.7; font-size: 12px; color: white;">
                         Gérer mes rdv
                       </div>
                     </div>
@@ -45,5 +45,22 @@
           </div>
         </div>
       </nav>
+      <div style="height: 20rem; background-image: linear-gradient(#107ACA, #10A7DA); display: grid; grid-template-rows: auto auto; grid-template-columns: auto, auto;"> <!--barre de recherche + image-->
+        <form style="display: flex; align-items: center; justify-content: center;">
+          <div class="row">
+            <div class="col-5">
+              <input type="text" class="form-control" placeholder="Spécialité">
+            </div>
+            <div class="col-5">
+              <input type="text" class="form-control" placeholder="Où">
+            </div>
+            <div class="col-2">
+              <button style="background-color:orange;" type="submit" class="btn btn-primary">Recherche</button>
+            </div>
+          </div>
+        </form>  
+        <!-- <img style="resize: both; width: 20vw; height: 20vh; grid-ro w-start:2; grid-row-end:3; grid-column-start:2; grid-column-end: 3;" src="public_html/img/raoul.png"> -->
+      </div>
+           
 </body>
 </html>
