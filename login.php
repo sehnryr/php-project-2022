@@ -11,7 +11,6 @@ if (isset($_COOKIE['docto_session'])) {
 		$db->tryConnectUser();
 		redirect('user.php');
 	} catch (AuthenticationException $e) {
-		return;
 	}
 }
 
@@ -23,7 +22,6 @@ if (isset($_POST['login'])) {
 		$db->connectUser($email, $password);
 		redirect('user.php');
 	} catch (AuthenticationException $e) {
-		return;
 	}
 }
 ?>

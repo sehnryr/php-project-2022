@@ -21,7 +21,7 @@ CREATE TABLE users (
     password_hash VARCHAR(60) NOT NULL, -- use PASSWORD_BCRYPT algo
     phone_number VARCHAR(10) NOT NULL, -- Google says to never store phone numbers as numeric data
     email VARCHAR(64) UNIQUE NOT NULL,
-    session_hash VARCHAR(64)
+    access_token VARCHAR(64)
 );
 
 -- Table specialties
@@ -40,7 +40,7 @@ CREATE TABLE doctors (
     email VARCHAR(64) UNIQUE NOT NULL,
     postal_code NUMERIC(5,0) NOT NULL,
     specialty_id INTEGER NOT NULL,
-    session_hash VARCHAR(64),
+    access_token VARCHAR(64),
 
     FOREIGN KEY(specialty_id) REFERENCES specialties(id)
         ON UPDATE CASCADE ON DELETE CASCADE

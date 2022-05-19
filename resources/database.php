@@ -36,6 +36,83 @@ class Database
     }
 
     /**
+     * Gets the password hash of a user.
+     * 
+     * @param string $email
+     * 
+     * @return string The password hash.
+     */
+    private function getUserPasswordHash(
+        string $email
+    ): ?string {
+        $email = strtolower($email);
+
+        $request = 'SELECT password_hash FROM users 
+                        WHERE email = :email';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        if (!$result) {
+            return NULL;
+        }
+
+        return $result->password_hash;
+    }
+
+    /** 
+     * Verifies the user credentials.
+     * 
+     * @param string $email
+     * @param string $password
+     * 
+     * @return bool
+     */
+    private function verifyUserCredentials(
+        string $email,
+        string $password
+    ): bool {
+        $password_hash = $this->getUserPasswordHash($email);
+        return !empty($password_hash) &&
+            password_verify($password, $password_hash);
+    }
+
+    /**
+     * Creates an access token if credentials are valid.
+     * 
+     * @param string $email
+     * @param string $password
+     * 
+     * @return string The access_token.
+     */
+    public function getUserAccessToken(
+        string $email,
+        string $password
+    ): ?string {
+        if (!$this->verifyUserCredentials($email, $password)) {
+            return NULL;
+        }
+
+        $email = strtolower($email);
+
+        $access_token = hash('sha256', $email . $password . time());
+
+        // Set access token on the user
+        $request = 'UPDATE users SET access_token = :access_token
+                        WHERE email = :email';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
+
+        return $access_token;
+    }
+
+    /**
      * Connects the user by returning its unique id if the 
      * credentials are valid.
      * 
@@ -48,47 +125,37 @@ class Database
     public function connectUser(
         string $email,
         string $password,
-        int $session_expire = 60 * 60 * 4 // 4 hours in seconds
+        int $session_expire = 0
     ): void {
-        try {
-            $this->tryConnectUser();
-            return;
-        } catch (AuthenticationException $e) {
+        if (!$this->verifyUserCredentials($email, $password)) {
+            throw new AuthenticationException('Authentication failed.');
         }
 
         $email = strtolower($email);
 
-        $request = 'SELECT password_hash FROM users 
-                        WHERE email = :email';
-
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':email', $email);
-        $statement->execute();
-
-        $result = $statement->fetch(PDO::FETCH_OBJ);
-
-        if (!$result || !password_verify($password, $result->password_hash)) {
-            throw new AuthenticationException('Authentication failed.');
-        }
-
-        $session_hash = hash('sha256', $email . $password . time());
+        $access_token = hash('sha256', $email . $password . microtime(true));
 
         // Set session hash on the user
-        $request = 'UPDATE users SET session_hash = :session_hash
+        $request = 'UPDATE users SET access_token = :access_token
                         WHERE email = :email';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
-        $statement->bindParam(':session_hash', $session_hash);
+        $statement->bindParam(':access_token', $access_token);
         $statement->execute();
 
-        if ($session_expire == 0) {
-            $cookie_expire = 0;
-        } else {
-            $cookie_expire = time() + $session_expire;
+        $access_token = $this->getUserAccessToken($email, $password);
+
+        switch ($session_expire) {
+            case 0:
+                $cookie_expire = 0;
+                break;
+            default:
+                $cookie_expire = time() + $session_expire;
+                break;
         }
 
-        setcookie('docto_session', $session_hash, $cookie_expire);
+        setcookie('docto_session', $access_token, $cookie_expire);
     }
 
     /**
@@ -102,13 +169,13 @@ class Database
             throw new AuthenticationException('Authentication failed.');
         }
 
-        $session_hash = $_COOKIE['docto_session'];
+        $access_token = $_COOKIE['docto_session'];
 
         $request = 'SELECT * FROM users
-                        WHERE session_hash = :session_hash';
+                        WHERE access_token = :access_token';
 
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':session_hash', $session_hash);
+        $statement->bindParam(':access_token', $access_token);
         $statement->execute();
 
         $result = $statement->fetch(PDO::FETCH_OBJ);
@@ -116,6 +183,38 @@ class Database
         if (empty($result)) {
             throw new AuthenticationException('Authentication failed.');
         }
+    }
+
+    /**
+     * Removes the access token from the user.
+     * 
+     * @param string $access_token
+     * 
+     * @throws AccessTokenNotFound If the access token is invalid.
+     */
+    public function removeUserAccessToken(string $access_token): void
+    {
+        // Search the user whose access token
+        $request = 'SELECT * FROM users
+                        WHERE access_token = :access_token';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($result)) {
+            throw new AccessTokenNotFound();
+        }
+
+        // remove access token
+        $request = 'UPDATE users SET access_token = NULL
+                        WHERE access_token = :access_token';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
     }
 
     /**
@@ -128,14 +227,8 @@ class Database
             return;
         }
 
-        $session_hash = $_COOKIE['docto_session'];
-
-        $request = 'UPDATE users SET session_hash = NULL
-                        WHERE session_hash = :session_hash';
-
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':session_hash', $session_hash);
-        $statement->execute();
+        $access_token = $_COOKIE['docto_session'];
+        $this->removeUserAccessToken($access_token);
 
         setcookie('docto_session', '', time() - 3600);
     }
@@ -143,26 +236,24 @@ class Database
     /**
      * Gets the general infos of a user
      * 
+     * @param string $access_token
+     * 
      * @return array Array of firstname, lastname, phone number and email.
      */
-    public function getUserInfo(): ?array
+    public function getUserInfos(string $access_token): ?array
     {
-        try {
-            $this->tryConnectUser();
-        } catch (AuthenticationException $e) {
-            return NULL;
-        }
-
-        $session_hash = $_COOKIE['docto_session'];
-
         $request = 'SELECT firstname, lastname, phone_number, email FROM users
-                        WHERE session_hash = :session_hash';
+                        WHERE access_token = :access_token';
 
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':session_hash', $session_hash);
+        $statement->bindParam(':access_token', $access_token);
         $statement->execute();
 
         $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($result)) {
+            throw new AccessTokenNotFound();
+        }
 
         return (array) $result;
     }

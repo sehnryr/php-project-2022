@@ -11,9 +11,11 @@ if (array_key_exists('disconnect', $_POST)) {
 	redirect('login.php');
 }
 
-$infos = $db->getUserInfo();
+$access_token = $_COOKIE['docto_session'];
 
-if (!$infos) {
+try {
+	$infos = $db->getUserInfos($access_token);
+} catch (Exception $_) {
 	redirect('login.php');
 }
 
