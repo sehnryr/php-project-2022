@@ -81,6 +81,27 @@ class Database
     }
 
     /**
+     * Verifies the user access token.
+     * 
+     * @param string $access_token
+     * 
+     * @return bool
+     */
+    private function verifyUserAccessToken(string $access_token): bool
+    {
+        $request = 'SELECT * FROM users
+                        WHERE access_token = :access_token';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return !empty($result);
+    }
+
+    /**
      * Creates an access token if credentials are valid.
      * 
      * @param string $email
@@ -194,18 +215,8 @@ class Database
      */
     public function removeUserAccessToken(string $access_token): void
     {
-        // Search the user whose access token
-        $request = 'SELECT * FROM users
-                        WHERE access_token = :access_token';
-
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':access_token', $access_token);
-        $statement->execute();
-
-        $result = $statement->fetch(PDO::FETCH_OBJ);
-
-        if (empty($result)) {
-            throw new AccessTokenNotFound();
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
         }
 
         // remove access token
@@ -252,7 +263,7 @@ class Database
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
         if (empty($result)) {
-            throw new AccessTokenNotFound();
+            throw new AuthenticationException();
         }
 
         return (array) $result;
@@ -302,6 +313,51 @@ class Database
         $statement->bindParam(':password_hash', $password_hash);
         $statement->bindParam(':phone_number', $phoneNumber);
         $statement->bindParam(':email', $email);
+        $statement->execute();
+    }
+
+    /**
+     * Deletes a user.
+     * 
+     * @param string $email
+     * @param string $password
+     * 
+     * @throws AuthenticationException
+     */
+    public function deleteUser(
+        string $email,
+        string $password
+    ): void {
+        if (!$this->verifyUserCredentials($email, $password)) {
+            throw new AuthenticationException();
+        }
+
+        $request = 'DELETE FROM users
+                        WHERE email = :email';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+    }
+
+    /**
+     * Deletes a user with its authorization token.
+     * 
+     * @param string $access_token
+     * 
+     * @throws AuthenticationException
+     */
+    public function deleteUserWithToken(string $access_token): void
+    {
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
+        }
+
+        $request = 'DELETE FROM users
+                        WHERE access_token = :access_token';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
         $statement->execute();
     }
 

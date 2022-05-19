@@ -43,7 +43,7 @@ class APIErrors
 		http_response_code(400);
 		die(json_encode(array(
 			'error' => 'invalid_header',
-			'error_description' => 'The request is missing the Authorization header.'
+			'error_description' => 'The request is missing the Authorization header or the Authorization header is invalid.'
 		)));
 	}
 
@@ -54,6 +54,12 @@ class APIErrors
 			'error' => 'invalid_request',
 			'error_description' => 'The request is missing a parameter, uses an unsupported parameter, uses an invalid parameter or repeats a parameter.'
 		)));
+	}
+
+	public static function internalError()
+	{
+		http_response_code(500);
+		die();
 	}
 }
 
@@ -84,7 +90,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
 		try {
 			$db->removeUserAccessToken($authorization);
-		} catch (AccessTokenNotFound $_) {
+		} catch (AuthenticationException $_) {
 			APIErrors::invalidGrant();
 		}
 
@@ -115,6 +121,20 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 			'token_type' => 'bearer'
 		)));
 		break;
+	case 'delete' . 'DELETE':
+		$authorization = getAuthorizationToken();
+
+		try {
+			$db->deleteUserWithToken($authorization);
+		} catch (AuthenticationException $_) {
+			APIErrors::invalidHeader();
+		}
+
+		http_response_code(200);
+		die(json_encode(array(
+			'message' => 'User deleted successfully.'
+		)));
+		break;
 	case 'user' . 'GET':
 		$authorization = getAuthorizationToken();
 
@@ -122,7 +142,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 			$userInfos = $db->getUserInfos($authorization);
 			http_response_code(200);
 			die(json_encode($userInfos));
-		} catch (AccessTokenNotFound $_) {
+		} catch (AuthenticationException $_) {
 			APIErrors::invalidGrant();
 		}
 		break;

@@ -21,10 +21,3 @@ class AuthenticationException extends Exception
 class DuplicateEmailException extends Exception
 {
 }
-
-/**
- * Thrown when the access token could not be found in the database.
- */
-class AccessTokenNotFound extends Exception
-{
-}
