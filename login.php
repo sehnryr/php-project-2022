@@ -22,6 +22,10 @@ if(array_key_exists('connection', $_POST)){
 	redirect('login.php');
 }
 
+if(array_key_exists('register', $_POST)){
+	redirect('register.php');
+}
+
 if (isset($_POST['login'])) {
 	$email = $_POST['emailLogin'];
 	$password = $_POST['passwordLogin'];
@@ -113,7 +117,9 @@ if (isset($_POST['login'])) {
   <div class="card my-4" style="width: 32rem;">
     <div class="card-body">
       <p>Nouveau sur DoctoLibertain ?</p>
-      <a href="DoctoInscription.html" style="background-color: #2E96E2;">S'INSCRIRE</a>
+      <form method="post">
+        <button name="register" class="btn btn-primary" style="background-color: #2E96E2;">S'INSCRIRE</button>
+      </form>
     </div>
   </div>
 </div>

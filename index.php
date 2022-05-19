@@ -3,6 +3,10 @@
     require_once 'resources/config.php';
     require_once LIBRARY_PATH . '/common.php';
 
+    if(array_key_exists('homepage', $_POST)){
+        redirect('');
+    }
+    
     if(array_key_exists('connection', $_POST)){
         redirect('login.php');
     }
@@ -23,10 +27,15 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-          <a class="navbar-brand" id="website_name" href="DoctoLibertain.html" style="font-family: 'Fuggles', cursive;font-size: 45px;">DoctoLibertain</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+        <form method="post">
+    	    <button class="navbar-brand bg-transparent border-0" name="homepage" id="homepage" style="font-family: 'Fuggles', cursive;font-size: 45px;">
+			    DoctoLibertain
+		    </button>
+		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+		    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      		    <span class="navbar-toggler-icon"></span>
+    	    </button>
+	    </form>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">

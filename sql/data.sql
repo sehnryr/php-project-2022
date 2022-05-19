@@ -29,7 +29,9 @@ INSERT INTO specialties (name) VALUES
 ('Esthéticien-ne'),
 ('Urologue'),
 ('Kinésithérapeute'),
-('Podologue');
+('Podologue'),
+('Chirurgien-ne plasticien-ne'),
+('Gynécologue');
 
 -- Populate siecle table
 ALTER SEQUENCE doctors_id_seq RESTART;
@@ -37,7 +39,9 @@ INSERT INTO doctors (firstname, lastname, password_hash, phone_number, email, po
 ('Mask', 'Masochiste', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'mm@test.com', 44000, 2),
 ('Poney', 'Play', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'pp@test.com', 44000, 3),
 ('Dominique', 'Strauss-Kahn', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'dsk@test.com', 44000, 4),
-('Marc', 'Dutroux', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'md@test.com', 44000, 1);
+('Marc', 'Dutroux', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'md@test.com', 44000, 1),
+('Louison', 'Diguer', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'ld@test.com', 44000, 6),
+('Martin', 'Lobel', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'ml@test.com', 44000, 7);
 
 -- Populate citation table
 ALTER SEQUENCE appointments_id_seq RESTART;
