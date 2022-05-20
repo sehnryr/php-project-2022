@@ -40,7 +40,7 @@
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <div style="font-size: 15px;" class="badge rounded-pill bg-light text-dark">
+                    <div style="font-size: 15px;color: #107ACA;" class="badge rounded-pill bg-light">
                         Vous êtes un professionnel de santé ?
                     </div>
                 </a>
@@ -74,6 +74,40 @@
           <button style="background-color:orange;" type="submit" class="btn btn-primary">Recherche</button>
         </form>
         <img class="position-absolute bottom-0 end-0" style="resize: both; width: 20vw; height: 20vh;" src="public_html/img/raoul.png">
+      </div>
+      <!-- Actualités -->
+      <div>
+        <p><h4 class="text-center">Actualités à la une :</h4></p>
+        <div>
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="..." class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="..." class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
 </body>
 </html>
