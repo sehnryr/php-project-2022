@@ -25,10 +25,10 @@
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg" style="background-color: #107ACA;">
         <div class="container-fluid">
         <form method="post">
-    	    <button class="navbar-brand bg-transparent border-0" name="homepage" id="homepage" style="font-family: 'Fuggles', cursive;font-size: 45px;">
+    	    <button class="navbar-brand bg-transparent border-0 text-white" name="homepage" id="homepage" style="font-family: 'Fuggles', cursive;font-size: 45px;">
 			    DoctoLibertain
 		    </button>
 		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
@@ -50,7 +50,7 @@
               </div>
               <li class="nav-item">
                 <form method="post">
-                    <button class="nav-link container-fluid bg-transparent border-0" name="connection">
+                    <button class="nav-link container-fluid bg-transparent border-0 text-white" name="connection">
                         <div class="">
                             <div class="fw-bolder link-light">
                                 Se connecter
@@ -66,5 +66,14 @@
           </div>
         </div>
       </nav>
+      <!--barre de recherche + image-->
+      <div class="d-flex align-items-center justify-content-center position-relative" style="height: 20rem; background-image: linear-gradient(#107ACA, #10A7DA); display: grid; grid-template-rows: auto auto auto; grid-template-columns: auto auto auto;"> 
+        <form style="display: flex; align-items: center; justify-content: center;">
+          <input type="text" class="form-control" placeholder="Spécialité">
+          <input type="text" class="form-control" placeholder="Où">
+          <button style="background-color:orange;" type="submit" class="btn btn-primary">Recherche</button>
+        </form>
+        <img class="position-absolute bottom-0 end-0" style="resize: both; width: 20vw; height: 20vh;" src="public_html/img/raoul.png">
+      </div>
 </body>
 </html>
