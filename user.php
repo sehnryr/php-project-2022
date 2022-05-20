@@ -68,10 +68,10 @@ try {
     </nav>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-3" style="background-color: #C7D0D9; height: 89.80vh">
-				<h5>Voir les rendez-vous passés</h5>
+			<div class="col-3  d-flex justify-content-center" style="background-color: #C7D0D9; height: 89.80vh">
+				<h5 class="mt-4 text-decoration-underline">Voir les rendez-vous passés :</h5>
 			</div>
-			<div class="col"  style="background-color: #E9EDF1">
+			<div class="col d-flex align-items-center justify-content-center" style="background-color: #E9EDF1">
 				<div>
 					<img src="public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg" alt="calendar" style="transform: rotate(-14.17deg);">
 					<p>
