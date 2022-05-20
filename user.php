@@ -66,5 +66,21 @@ try {
           	</div>
         </div>
     </nav>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-3" style="background-color: #C7D0D9; height: 89.80vh">
+				<h5>Voir les rendez-vous passés</h5>
+			</div>
+			<div class="col"  style="background-color: #E9EDF1">
+				<div>
+					<img src="public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg" alt="calendar" style="transform: rotate(-14.17deg);">
+					<p>
+						Aucun rendez-vous à venir<br>
+						Prendre rendez-vous
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

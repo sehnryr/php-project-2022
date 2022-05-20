@@ -79,16 +79,16 @@
       <div>
         <p><h4 class="text-center">Actualités à la une :</h4></p>
         <div>
-        <div class="card mb-3">
+        <div class="card mb-3" style="background-color: #EAF7FD;">
           <div class="row g-0">
             <div class="col-md-4">
-              <img src="..." class="img-fluid rounded-start" alt="...">
+              <img src="public_html/img/Didier Raoult Actu.jpg" class="img-fluid rounded-start" alt="Photo Didier Raoult">
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                <h5 class="card-title">Mr Raoult fait encore des ravages...</h5>
+                <p class="card-text">Mr Didier Raoult a fait débat son intervention lors d'un conférence sur le plaisir, ...</p>
+                <p class="card-text"><small class="text-muted">Publié, il y a 3 jours</small></p>
               </div>
             </div>
           </div>
