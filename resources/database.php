@@ -381,6 +381,27 @@ class Database
     }
 
     /**
+     * Gets the firstname and lastname of a doctor.
+     * 
+     * @param int $id of a doctor
+     * 
+     * @return array an array with firstname and lastname
+     */
+    public function getDoctorName(int $id): ?array
+    {
+        $request = 'SELECT d.firstname, d.lastname FROM doctors d
+                        WHERE d.id = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    /**
      * Gets the name of the specialty of a doctor.
      * 
      * @param int $id
@@ -392,7 +413,7 @@ class Database
         $request = 'SELECT s.name FROM specialties s 
                         LEFT JOIN doctors d 
                         ON s.id = d.specialty_id 
-                        WHERE d.if = :id';
+                        WHERE d.id = :id';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':id', $id);
@@ -408,7 +429,7 @@ class Database
      * 
      * @param int $id
      * 
-     * @return mixed TODO
+     * @return array return an array of doctorid and datetime for each appointement 
      */
     public function getAllAppointments(int $id): ?array
     {
