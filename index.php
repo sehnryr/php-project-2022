@@ -38,27 +38,29 @@
 	    </form>
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-              <li class="nav-item">
+              <li class="nav-item mt-2">
                 <a class="nav-link" href="#">
                     <div style="font-size: 15px;color: #107ACA;" class="badge rounded-pill bg-light">
                         Vous êtes un professionnel de santé ?
                     </div>
                 </a>
               </li>
-              <div class="nav-item">
-                <img  width="16" height="16" src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg" alt="Person">
-              </div>
               <li class="nav-item">
                 <form method="post">
                     <button class="nav-link container-fluid bg-transparent border-0 text-white" name="connection">
-                        <div class="">
-                            <div class="fw-bolder link-light">
-                                Se connecter
-                            </div>
-                            <div style="opacity: 0.7; font-size: 12px;">
-                                Gérer mes rdv
-                            </div>
-                        </div>
+                      <ul class="list-inline">
+                        <li class="list-inline-item mb-2">
+                          <img src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg" alt="Person" style="transform: translate(0, -1.25vh);">
+                        </li>
+                        <li class="list-inline-item">
+                          <div class="fw-bolder link-light">
+                            Se connecter
+                          </div>
+                          <div style="opacity: 0.7; font-size: 12px;">
+                            Gérer mes rdv
+                          </div>
+                        </li>
+                      </ul>
                     </button>
                 </form>
               </li>
