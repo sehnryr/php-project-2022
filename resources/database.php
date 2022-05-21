@@ -249,11 +249,11 @@ class Database
      * 
      * @param string $access_token
      * 
-     * @return array Array of firstname, lastname, phone number and email.
+     * @return array Array of id, firstname, lastname, phone number and email.
      */
     public function getUserInfos(string $access_token): ?array
     {
-        $request = 'SELECT firstname, lastname, phone_number, email FROM users
+        $request = 'SELECT id, firstname, lastname, phone_number, email FROM users
                         WHERE access_token = :access_token';
 
         $statement = $this->PDO->prepare($request);
@@ -410,9 +410,9 @@ class Database
      * 
      * @return mixed TODO
      */
-    public function getAllAppointments(int $id): mixed
+    public function getAllAppointments(int $id): ?array
     {
-        $request = 'SELECT id FROM appointments 
+        $request = 'SELECT doctorid, date_time FROM appointments 
                         WHERE userid = :id';
 
         $statement = $this->PDO->prepare($request);
@@ -421,6 +421,6 @@ class Database
 
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result;
+        return (array) $result;
     }
 }

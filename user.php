@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once 'resources/config.php';
 require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
@@ -68,8 +71,33 @@ try {
     </nav>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-3  d-flex justify-content-center" style="background-color: #C7D0D9; height: 89.80vh">
+			<div class="col-3 d-flex flex-column align-items-start justify-content-center" style="background-color: #C7D0D9; height: 89.80vh">
 				<h5 class="mt-4 text-decoration-underline">Voir les rendez-vous passés :</h5>
+				<div class="col mt-2">
+				<?php
+					$appiontements = $db->getAllAppointments($infos['id']);
+					if(!empty($appiontements)){
+						foreach($appiontements as $appiontement){
+							$date = explode(" ", $appiontement['date_time']);
+							echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
+  							echo "<div class=\"card-body\">";
+							echo "<h5 class=\"card-title\"><span class=\"badge rounded-pill text-black\" style=\"background-color: #C4C4C4;\">";
+							echo "<img src=\"public_html/img/calendar_month_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\">";
+							echo date("d M Y", strtotime($date[0]));
+							echo "<img src=\"public_html/img/schedule_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"clock\">";
+							echo $date[1];
+							echo "</span></h5>";
+    						echo "<p class=\"card-text\">";
+							echo "Some";
+							echo "</p>";
+  							echo "</div>";
+							echo "</div>";
+						}
+					}else{
+						echo "<p>Vous n'avez pas pris d'encien rendez-vous avec DoctoLibertain</p>";
+					}
+				?>
+				</div>
 			</div>
 			<div class="col d-flex align-items-center justify-content-center" style="background-color: #E9EDF1">
 				<div>
