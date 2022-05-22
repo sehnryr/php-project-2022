@@ -444,4 +444,43 @@ class Database
 
         return (array) $result;
     }
+
+    /**
+     * Gets all specialities and their id
+     * 
+     * @return array return an array with all specialties and id
+     */
+    public function getAllSpecialties(): ?array
+    {
+        $request = 'SELECT * FROM specialties';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    /**
+     * Gets all the appointments free for a specialty 
+     * 
+     * @param string $id of a specialty
+     * 
+     * @return array return an array with all appointment
+     */
+    public function getAppointmentsForASpecialty(int $id): ?array
+    {
+        $request = 'SELECT a.id, a.date_time, d.id, d.firstname, d.lastname, s.name FROM appointments a 
+                    LEFT JOIN doctors d ON a.doctorid = d.id LEFT JOIN specialties s ON d.specialty_id = s.id 
+                    WHERE userid IS NULL AND s.id = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return (array) $result;
+    }
 }

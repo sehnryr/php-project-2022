@@ -12,6 +12,10 @@ if(array_key_exists('homepage', $_POST)){
 	redirect('');
 }
 
+if(array_key_exists('search', $_POST)){
+	redirect('');
+}
+
 // bind button 'disconnect' to this condition.
 if (array_key_exists('disconnect', $_POST)) {
 	$db->disconnectUser();
@@ -141,17 +145,26 @@ try {
 								}
 							}
 							if(!$put_an_appointment){
-								echo "<img src=\"public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\" style=\"transform: rotate(-14.17deg);\">";
-								echo "<p>";
+								echo "<ul class=\"list-inline\"><li class=\"list-inline-item\">";
+								echo "<img src=\"public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\" style=\"transform: rotate(-14.17deg) translate(0, -2vh);;\">";
+								echo "</li><li class=\"list-inline-item\"><p>";
 								echo "Aucun rendez-vous à venir<br>";
-								echo "Prendre rendez-vous";
-								echo "</p>";
+								echo "<form method=\"post\">";
+								echo "<button class=\"navbar-brand bg-transparent border-0 m-0 p-0 text-primary\" name=\"search\" style=\"font-size: 15px\">";
+								echo "Prendre un nouveau rendez-vous";
+								echo "</button>";
+								echo "</form>";
+								echo "</p></li></ul>";
 							}
 						}else{
 							echo "<img src=\"public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\" style=\"transform: rotate(-14.17deg);\">";
 							echo "<p>";
 							echo "Aucun rendez-vous à venir<br>";
-							echo "Prendre rendez-vous";
+							echo "<form method=\"post\">";
+							echo "<button class=\"navbar-brand bg-transparent border-0 m-0 p-0 text-primary\" name=\"search\" style=\"font-size: 15px\">";
+							echo "Prendre un nouveau rendez-vous";
+							echo "</button>";
+							echo "</form>";
 							echo "</p>";
 						}
 					?>

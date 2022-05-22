@@ -43,7 +43,7 @@ INSERT INTO doctors (firstname, lastname, password_hash, phone_number, email, po
 ('Louison', 'Diguer', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'ld@test.com', 44000, 6),
 ('Martin', 'Lobel', '$2y$10$IOfwEyrZYTCoBOhX1O8hPuAAtBhikQg94vboI1gKzMSVQdOjGwBNO', '0612345678', 'ml@test.com', 44000, 7);
 
--- Populate citation table
+-- Populate appointments table with lock rdv
 ALTER SEQUENCE appointments_id_seq RESTART;
 INSERT INTO appointments (userid, doctorid, date_time) VALUES
 (1, 1, '2022-01-15'),
@@ -52,3 +52,12 @@ INSERT INTO appointments (userid, doctorid, date_time) VALUES
 (4, 1, '2022-04-05'),
 (5, 3, '2022-05-08'),
 (2, 4, '2022-06-19');
+
+-- Populate appointments table with free rdv
+INSERT INTO appointments(doctorid, date_time) VALUES
+(1, '2022-06-25'),
+(2, '2022-06-25'),
+(4, '2022-06-25'),
+(5, '2022-06-25'),
+(6, '2022-06-25'),
+(6, '2022-06-05');
