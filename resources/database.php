@@ -402,6 +402,26 @@ class Database
     }
 
     /**
+     * Gets the postal code of a doctor
+     * 
+     * @param int $id of a doctor
+     * 
+     * @return int the postalcode where the doctor is
+     */
+    public function getDoctorPCode(int $id): int
+    {
+        $request = 'SELECT postal_code from doctors where id = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return $result->postal_code;
+    }
+
+    /**
      * Gets the name of the specialty of a doctor.
      * 
      * @param int $id
@@ -543,7 +563,7 @@ class Database
         $statement->execute();
 
         $result = $statement->fetch(PDO::FETCH_OBJ)->userid;
-        
+
         if($result != NULL){
             return true;
         }else{

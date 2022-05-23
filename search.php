@@ -98,21 +98,49 @@ if (array_key_exists('setAppointment', $_POST)) {
   </div>
   <!-- Résultat de recherche -->
   <?php
-  $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
-  foreach ($appoints as $appoint) {
-    echo "<div class=\"card\" style=\"width: 18rem;\">";
-    echo "<div class=\"card-body\">";
-    echo "<h5 class=\"card-title\">" . $appoint['firstname'] . " " . $appoint['lastname'] . "</h5>";
-    echo "<h6 class=\"card-subtitle mb-2 text-muted\">" . $appoint['name'] . "</h6>";
-    echo "<p class=\"card-text\">" . $appoint['date_time'] . "</p>";
-    echo "<form method=\"post\">";
-		echo "<button class=\"bg-info text-white border-0\" name=\"setAppointment\" style=\"transform: translate(7vw)\" value=\"". $appoint['appoint_id'] ."\">";
-		echo "Réserver le rdv";
-		echo "</button>";
-		echo "</form>";
-    echo "</div>";
-    echo "</div>";
-  }
+    $put_a_value = false;
+    if(empty($_GET['ou'])){
+      $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
+      foreach ($appoints as $appoint) {
+        echo "<div class=\"card\" style=\"width: 18rem;\">";
+        echo "<div class=\"card-body\">";
+        echo "<h5 class=\"card-title\">" . $appoint['firstname'] . " " . $appoint['lastname'] . "</h5>";
+        echo "<h6 class=\"card-subtitle mb-2 text-muted\">" . $appoint['name'] . "</h6>";
+        echo "<p class=\"card-text\">" . $appoint['date_time'] . "</p>";
+        echo "<form method=\"post\">";
+		    echo "<button class=\"bg-info text-white border-0\" name=\"setAppointment\" style=\"transform: translate(7vw)\" value=\"". $appoint['appoint_id'] ."\">";
+		    echo "Réserver le rdv";
+		    echo "</button>";
+		    echo "</form>";
+        echo "</div>";
+        echo "</div>";
+        $put_a_value = true;
+      }
+    }else{
+      $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
+      foreach ($appoints as $appoint) {
+        if($db->getDoctorPCode($appoint['doctor_id']) == $_GET['ou']){
+          echo "<div class=\"card\" style=\"width: 18rem;\">";
+          echo "<div class=\"card-body\">";
+          echo "<h5 class=\"card-title\">" . $appoint['firstname'] . " " . $appoint['lastname'] . "</h5>";
+          echo "<h6 class=\"card-subtitle mb-2 text-muted\">" . $appoint['name'] . "</h6>";
+          echo "<p class=\"card-text\">" . $appoint['date_time'] . "</p>";
+          echo "<form method=\"post\">";
+	      	echo "<button class=\"bg-info text-white border-0\" name=\"setAppointment\" style=\"transform: translate(7vw)\" value=\"". $appoint['appoint_id'] ."\">";
+	      	echo "Réserver le rdv";
+	      	echo "</button>";
+	      	echo "</form>";
+          echo "</div>";
+          echo "</div>";
+          $put_a_value = true;
+        }
+      }
+    }
+    if(!$put_a_value){
+      echo "<div class=\"alert alert-warning\" role=\"alert\">";
+      echo "Il n'y a pas de médecin pour vos critères dans la base de données !";
+      echo "</div>";
+    }
   ?>
 </body>
 
