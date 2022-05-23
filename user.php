@@ -19,6 +19,9 @@ if (array_key_exists('disconnect', $_POST)) {
 	redirect('index.php');
 }
 
+if (array_key_exists('cancelAppointment', $_POST)){
+	$db->cancelAppointment($_POST['cancelAppointment']);
+}
 
 try {
 	$access_token = $_COOKIE['docto_session'];
@@ -73,7 +76,8 @@ try {
 		</div>
 	</nav>
 	<div class="container-fluid">
-		<div class="row">
+		<div class="row">	
+			<!-- Rendez-vous passé -->
 			<div class="col-3 d-flex flex-column align-items-start justify-content-center" style="background-color: #C7D0D9; height: 88.2vh">
 				<h5 class="mt-4 text-decoration-underline">Voir les rendez-vous passés :</h5>
 				<div class="col mt-2">
@@ -114,6 +118,7 @@ try {
 					?>
 				</div>
 			</div>
+			<!-- Rendez-vous à venir -->
 			<div class="col d-flex align-items-center justify-content-center" style="background-color: #E9EDF1">
 				<div>
 					<?php
@@ -139,6 +144,11 @@ try {
 								echo "<p class=\"card-text\">";
 								echo "Spécialté : " . $db->getDoctorSpecialty($appointement['doctorid']);
 								echo "</p>";
+								echo "<form method=\"post\">";
+								echo "<button class=\"bg-danger text-white border-0\" name=\"cancelAppointment\" style=\"transform: translate(7vw)\" value=\"". $appointement['id'] ."\">";
+								echo "Annuler le rdv ?";
+								echo "</button>";
+								echo "</form>";
 								echo "</div>";
 								echo "</div>";
 							}

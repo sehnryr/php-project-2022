@@ -433,7 +433,7 @@ class Database
      */
     public function getAllAppointments(int $id): ?array
     {
-        $request = 'SELECT doctorid, date_time FROM appointments 
+        $request = 'SELECT id, doctorid, date_time FROM appointments 
                         WHERE userid = :id';
 
         $statement = $this->PDO->prepare($request);
@@ -482,5 +482,100 @@ class Database
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return (array) $result;
+    }
+
+    /**
+     * Gets the date of the appointment
+     * 
+     * @param id $id of the appointment
+     * 
+     * @return string date of the appointment
+     */
+    public function getAppointmentsDate(int $id): string
+    {
+        $request = 'SELECT date_time from appointments a where a.id = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return (string) $result->date_time;
+    }
+
+    /**
+     * Cancel an appointment which is not passed
+     * 
+     * @param id $id of the appointment
+     * 
+     * @return bool return true if it was made or false if it wasn't
+     */
+    public function cancelAppointment(int $id): bool
+    {
+        $date = strtotime($this->getAppointmentsDate($id));
+        if($date > time()){
+            $request = 'UPDATE appointments set userid = NULL where id = :id';
+
+            $statement = $this->PDO->prepare($request);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Gets if the appointment is already taken
+     * 
+     * @param id $id of the appointment
+     * 
+     * @return bool return true if take or false if free
+     */
+    public function appointmentIsTaken(int $id): bool
+    {
+        $request = 'SELECT userid from appointments where id = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        if($result != NULL){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Reserve an appointment which is not passed
+     * 
+     * @param id $id of the appointment
+     * @param userid $userid 
+     * 
+     * @return bool return true if it was made or false if it wasn't
+     */
+    public function setAppointment(int $id, int $userid): bool
+    {
+        if($this->appointmentIsTaken($id)){
+            return false;
+        }else{
+            if(strtotime($this->getAppointmentsDate($id)) > time()){
+                $request = 'UPDATE appointments set userid = :userid where id = :id';
+
+                $statement = $this->PDO->prepare($request);
+                $statement->bindParam(':userid', $userid);
+                $statement->bindParam(':id', $id);
+                $statement->execute();
+    
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 }
