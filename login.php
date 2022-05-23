@@ -99,14 +99,6 @@ if (isset($_POST['login'])) {
           </div>
           <div class="form-group">
             <input type="password" id="passwordLogin" name="passwordLogin" class="form-control mx-sm-3" aria-describedby="passwordHelpInline" placeholder="Mot de passe" pattern=".{1,256}" required>
-            <!-- <small id="passwordHelpInline" class="text-muted">
-              Must be 8-256 characters long.
-            </small> -->
-          </div>
-
-          <div class="custom-control custom-checkbox mb-3">
-            <input type="checkbox" class="custom-control-input" id="customControlValidation1">
-            <label class="custom-control-label" for="customControlValidation1">Se souvenir de mon identifiant</label>
           </div>
           <button type="submit" name="login" class="btn btn-primary">SE CONNECTER</button>
         </form>
