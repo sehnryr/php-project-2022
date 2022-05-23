@@ -74,12 +74,12 @@ usort($specialties, function ($a, $b) {
     <!--barre de recherche + image-->
     <form class="input-group my-5" action="search.php" method="get" style="max-width: 70%;">
       <select class="form-select" name="spe">
-        <option style="display:none;" selected disabled>Spécialité...</option>
+        <option style="display:none;" disabled>Spécialité...</option>
         <?php foreach ($specialties as $spe) { ?>
-          <option value="<?php echo $spe['id']; ?>"><?php echo $spe['name']; ?></option>
+          <option value="<?php echo $spe['id']; ?>" <?php if ($spe['id'] == $_GET['spe']) echo 'selected'; ?>><?php echo $spe['name']; ?></option>
         <?php } ?>
       </select>
-      <input type="text" class="form-control" placeholder="Où... (Code postal)" name="ou" pattern="\d{5}">
+      <input type="text" class="form-control" placeholder="Où... (Code postal)" name="ou" pattern="\d{5}" <?php if (isset($_GET['ou'])) echo 'value="' . $_GET['ou'] . '"'; ?>>
       <button class="btn btn-success" type="submit" id="search">Recherche</button>
     </form>
     <!-- Résultat de recherche -->
