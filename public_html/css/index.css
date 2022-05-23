@@ -1,4 +1,53 @@
-#website_name {
+html,
+body {
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.navbar-brand:hover,
+.navbar-brand {
     font-family: 'Fuggles', cursive;
-    
+    font-size: 45px;
+    font-weight: bold;
+    color: white;
+}
+
+main {
+    height: auto;
+}
+
+.home-image {
+    position: absolute;
+
+    resize: both;
+    height: 80vh;
+
+    bottom: -7vh;
+    left: -5vh;
+}
+
+button img {
+    color: #f8f9fa;
+}
+
+button:focus img,
+button:hover img {
+    filter: invert(84%);
+    transition: filter .15s ease-in-out;
+}
+
+#btn-pro {
+    transition: display 2s ease-in-out;
+}
+
+@media screen and (max-width: 700px) {
+    #btn-pro {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 700px) {
+    #btn-pro {
+        display: block;
+    }
 }
