@@ -13,6 +13,10 @@ if (array_key_exists('connection', $_POST)) {
 }
 
 $db = new Database();
+$specialties = $db->getAllSpecialties();
+usort($specialties, function ($a, $b) {
+  return $a['name'] <=> $b['name'];
+})
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -20,109 +24,62 @@ $db = new Database();
 <head>
   <meta charset="UTF-8">
   <title>Doctolibertain</title>
-  <link rel="stylesheet" href="public_html/css/index.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fuggles&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="public_html/css/index.css">
+  <link rel="stylesheet" href="public_html/css/floating-square-animation.css">
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg" style="background-color: #107ACA;">
+<body class="d-flex flex-column">
+  <div class="area">
+    <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <img class="home-image" src="public_html/img/TaeAugust07.svg" />
+  </div>
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <form method="post">
-        <button class="navbar-brand bg-transparent border-0 text-white" name="homepage" id="homepage" style="font-family: 'Fuggles', cursive;font-size: 45px;">
-          DoctoLibertain
+      <a class="navbar-brand" href="">DoctoLibertain</a>
+      <div class="d-flex justify-content-end align-items-center">
+        <button class="btn btn-light" id="btn-pro" disabled>
+          Vous êtes un professionnel de santé ?
         </button>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </form>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item mt-2">
-            <a class="nav-link" href="#">
-              <div style="font-size: 15px;color: #107ACA;" class="badge rounded-pill bg-light">
-                Vous êtes un professionnel de santé ?
-              </div>
-            </a>
-          </li>
-          <li class="nav-item">
-            <form method="post">
-              <button class="nav-link container-fluid bg-transparent border-0 text-white" name="connection">
-                <ul class="list-inline">
-                  <li class="list-inline-item mb-2">
-                    <img src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg" alt="Person" style="transform: translate(0, -1.25vh);">
-                  </li>
-                  <li class="list-inline-item">
-                    <div class="fw-bolder link-light">
-                      Se connecter
-                    </div>
-                    <div style="opacity: 0.7; font-size: 12px;">
-                      Gérer mes rdv
-                    </div>
-                  </li>
-                </ul>
-              </button>
-            </form>
-          </li>
-        </ul>
+        <a class="btn btn-outline-light ms-2" type="button" href="login.html">
+          <div class="d-flex align-items-center">
+            <img class="me-2" style="height: 2rem;" src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg">
+            <div class="d-flex flex-column align-items-start">
+              <span>Se connecter</span>
+              <small>Gérer mes rdv</small>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   </nav>
-  <!--barre de recherche + image-->
-  <div class="d-flex align-items-center justify-content-center position-relative" style="height: 20rem; background-image: linear-gradient(#107ACA, #10A7DA); display: grid; grid-template-rows: auto auto auto; grid-template-columns: auto auto auto;">
-    <form action="search.php" method="get" style="display: flex; align-items: center; justify-content: center;">
-      <select name="spe" class="form-control" required>
-        <option value="">Quelle spécialité ?</option>
-        <?php
-        $spes = $db->getAllSpecialties();
-        foreach ($spes as $spe) {
-          echo "<option value=\"" . $spe['id'] . "\">" . $spe['name'] . "</option>";
-        }
-        ?>
+  <main class="flex-grow-1 d-flex justify-content-center align-items-start">
+    <form class="input-group mt-5" action="search.php" method="get" style="max-width: 70%;">
+      <select class="form-select" name="spe">
+        <option style="display:none;" selected>Spécialité...</option>
+        <?php foreach ($specialties as $spe) { ?>
+          <option value="<?php echo $spe['id']; ?>"><?php echo $spe['name']; ?></option>
+        <?php } ?>
       </select>
-      <input type="text" class="form-control" placeholder="Où" name="ou">
-      <button style="background-color:orange;" type="submit" class="btn btn-primary">Recherche</button>
+      <input type="text" class="form-control" placeholder="Où... (Code postal)" name="ou" pattern="\d{5}">
+      <button class="btn btn-success" type="submit" id="search">Recherche</button>
     </form>
-    <img class="position-absolute bottom-0 end-0" style="resize: both; width: 20vw; height: 20vh;" src="public_html/img/raoul.png">
-  </div>
-  <!-- Actualités -->
-  <div>
-    <p>
-    <h4 class="text-center">Actualités à la une :</h4>
-    </p>
-    <div>
-      <div class="card mb-3" style="background-color: #EAF7FD;">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="public_html/img/Didier Raoult Actu.jpg" class="img-fluid rounded-start" alt="Photo Didier Raoult">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Mr Raoult fait encore des ravages...</h5>
-              <p class="card-text">Mr Didier Raoult a fait débat son intervention lors d'un conférence sur le plaisir, ...</p>
-              <p class="card-text"><small class="text-muted">Publié, il y a 3 jours</small></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card mb-3">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="..." class="img-fluid rounded-start" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </main>
 </body>
 
 </html>
