@@ -5,7 +5,7 @@ require_once LIBRARY_PATH . '/common.php';
 require_once LIBRARY_PATH . '/exceptions.php';
 
 if (array_key_exists('homepage', $_POST)) {
-  redirect('');
+  // redirect('index.php');
 }
 
 if (array_key_exists('connection', $_POST)) {
