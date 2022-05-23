@@ -364,9 +364,9 @@ class Database
     /**
      * Get all the info from doctors and their specialties.
      * 
-     * @return mixed TODO
+     * @return array collection of doctors and their specialty.
      */
-    public function getDoctorsAndSpecialties(): mixed
+    public function getDoctorsAndSpecialties(): array
     {
         $request = 'SELECT * FROM doctors d
                         LEFT JOIN specialties s
@@ -377,7 +377,7 @@ class Database
 
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result;
+        return (array) $result;
     }
 
     /**
