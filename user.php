@@ -76,112 +76,110 @@ try {
 			</div>
 		</div>
 	</nav>
-	<div class="container-fluid">
-		<div class="row">
-			<!-- Rendez-vous passé -->
-			<div class="col-3 d-flex flex-column align-items-start justify-content-center" style="background-color: #C7D0D9; height: 88.2vh">
-				<h5 class="mt-4 text-decoration-underline">Voir les rendez-vous passés :</h5>
-				<div class="col mt-2">
-					<?php
-					$put_an_appointment = false;
-					$appointements = $db->getAllAppointments($infos['id']);
-					if (!empty($appointements)) {
-						foreach ($appointements as $appointement) {
-							if (strtotime($appointement['date_time']) < time()) {
-								$put_an_appointment = true;
-								$date = explode(" ", $appointement['date_time']);
-								$doc = $db->getDoctorName($appointement['doctorid']);
+	<main class="flex-grow-1 row">
+		<!-- Rendez-vous passé -->
+		<div class="col-3 ms-1 d-flex flex-column align-items-start justify-content-center" style="background-color: #C7D0D9;">
+			<h5 class="mt-4 text-decoration-underline">Voir les rendez-vous passés :</h5>
+			<div class="col mt-2">
+				<?php
+				$put_an_appointment = false;
+				$appointements = $db->getAllAppointments($infos['id']);
+				if (!empty($appointements)) {
+					foreach ($appointements as $appointement) {
+						if (strtotime($appointement['date_time']) < time()) {
+							$put_an_appointment = true;
+							$date = explode(" ", $appointement['date_time']);
+							$doc = $db->getDoctorName($appointement['doctorid']);
 
-								echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
-								echo "<div class=\"card-body\">";
-								echo "<h5 class=\"card-title\"><span class=\"badge rounded-pill text-black\" style=\"background-color: #C4C4C4;\">";
-								echo "<img src=\"public_html/img/calendar_month_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\">";
-								echo date("d M Y", strtotime($date[0]));
-								echo "<img src=\"public_html/img/schedule_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"clock\">";
-								echo $date[1];
-								echo "</span></h5>";
-								echo "<p class=\"card-text\">";
-								echo "Dr. " . $doc['firstname'] . " " . $doc['lastname'];
-								echo "</p>";
-								echo "<p class=\"card-text\">";
-								echo "Spécialté : " . $db->getDoctorSpecialty($appointement['doctorid']);
-								echo "</p>";
-								echo "</div>";
-								echo "</div>";
-							}
+							echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
+							echo "<div class=\"card-body\">";
+							echo "<h5 class=\"card-title\"><span class=\"badge rounded-pill text-black\" style=\"background-color: #C4C4C4;\">";
+							echo "<img src=\"public_html/img/calendar_month_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\">";
+							echo date("d M Y", strtotime($date[0]));
+							echo "<img src=\"public_html/img/schedule_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"clock\">";
+							echo $date[1];
+							echo "</span></h5>";
+							echo "<p class=\"card-text\">";
+							echo "Dr. " . $doc['firstname'] . " " . $doc['lastname'];
+							echo "</p>";
+							echo "<p class=\"card-text\">";
+							echo "Spécialté : " . $db->getDoctorSpecialty($appointement['doctorid']);
+							echo "</p>";
+							echo "</div>";
+							echo "</div>";
 						}
-						if (!$put_an_appointment) {
-							echo "<p>Vous n'avez pas pris d'ancien rendez-vous avec DoctoLibertain</p>";
-						}
-					} else {
+					}
+					if (!$put_an_appointment) {
 						echo "<p>Vous n'avez pas pris d'ancien rendez-vous avec DoctoLibertain</p>";
 					}
-					?>
-				</div>
+				} else {
+					echo "<p>Vous n'avez pas pris d'ancien rendez-vous avec DoctoLibertain</p>";
+				}
+				?>
 			</div>
-			<!-- Rendez-vous à venir -->
-			<div class="col d-flex align-items-center justify-content-center" style="background-color: #E9EDF1">
-				<div>
-					<?php
-					$put_an_appointment = false;
-					if (!empty($appointements)) {
-						foreach ($appointements as $appointement) {
-							if (strtotime($appointement['date_time']) > time()) {
-								$put_an_appointment = true;
-								$date = explode(" ", $appointement['date_time']);
-								$doc = $db->getDoctorName($appointement['doctorid']);
+		</div>
+		<!-- Rendez-vous à venir -->
+		<div class="col d-flex align-items-center justify-content-center" style="background-color: #E9EDF1">
+			<div>
+				<?php
+				$put_an_appointment = false;
+				if (!empty($appointements)) {
+					foreach ($appointements as $appointement) {
+						if (strtotime($appointement['date_time']) > time()) {
+							$put_an_appointment = true;
+							$date = explode(" ", $appointement['date_time']);
+							$doc = $db->getDoctorName($appointement['doctorid']);
 
-								echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
-								echo "<div class=\"card-body\">";
-								echo "<h5 class=\"card-title\"><span class=\"badge rounded-pill text-black\" style=\"background-color: #C4C4C4;\">";
-								echo "<img src=\"public_html/img/calendar_month_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\">";
-								echo date("d M Y", strtotime($date[0]));
-								echo "<img src=\"public_html/img/schedule_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"clock\">";
-								echo $date[1];
-								echo "</span></h5>";
-								echo "<p class=\"card-text\">";
-								echo "Dr. " . $doc['firstname'] . " " . $doc['lastname'];
-								echo "</p>";
-								echo "<p class=\"card-text\">";
-								echo "Spécialté : " . $db->getDoctorSpecialty($appointement['doctorid']);
-								echo "</p>";
-								echo "<form method=\"post\">";
-								echo "<button class=\"bg-danger text-white border-0\" name=\"cancelAppointment\" style=\"transform: translate(7vw)\" value=\"" . $appointement['id'] . "\">";
-								echo "Annuler le rdv ?";
-								echo "</button>";
-								echo "</form>";
-								echo "</div>";
-								echo "</div>";
-							}
-						}
-						if (!$put_an_appointment) {
-							echo "<ul class=\"list-inline\"><li class=\"list-inline-item\">";
-							echo "<img src=\"public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\" style=\"transform: rotate(-14.17deg) translate(0, -2vh);;\">";
-							echo "</li><li class=\"list-inline-item\"><p>";
-							echo "Aucun rendez-vous à venir<br>";
+							echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
+							echo "<div class=\"card-body\">";
+							echo "<h5 class=\"card-title\"><span class=\"badge rounded-pill text-black\" style=\"background-color: #C4C4C4;\">";
+							echo "<img src=\"public_html/img/calendar_month_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\">";
+							echo date("d M Y", strtotime($date[0]));
+							echo "<img src=\"public_html/img/schedule_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"clock\">";
+							echo $date[1];
+							echo "</span></h5>";
+							echo "<p class=\"card-text\">";
+							echo "Dr. " . $doc['firstname'] . " " . $doc['lastname'];
+							echo "</p>";
+							echo "<p class=\"card-text\">";
+							echo "Spécialté : " . $db->getDoctorSpecialty($appointement['doctorid']);
+							echo "</p>";
 							echo "<form method=\"post\">";
-							echo "<button class=\"navbar-brand bg-transparent border-0 m-0 p-0 text-primary\" name=\"search\" style=\"font-size: 15px\">";
-							echo "Prendre un nouveau rendez-vous";
+							echo "<button class=\"bg-danger text-white border-0\" name=\"cancelAppointment\" style=\"transform: translate(7vw)\" value=\"" . $appointement['id'] . "\">";
+							echo "Annuler le rdv ?";
 							echo "</button>";
 							echo "</form>";
-							echo "</p></li></ul>";
+							echo "</div>";
+							echo "</div>";
 						}
-					} else {
-						echo "<img src=\"public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\" style=\"transform: rotate(-14.17deg);\">";
-						echo "<p>";
+					}
+					if (!$put_an_appointment) {
+						echo "<ul class=\"list-inline\"><li class=\"list-inline-item\">";
+						echo "<img src=\"public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\" style=\"transform: rotate(-14.17deg) translate(0, -2vh);;\">";
+						echo "</li><li class=\"list-inline-item\"><p>";
 						echo "Aucun rendez-vous à venir<br>";
 						echo "<form method=\"post\">";
 						echo "<button class=\"navbar-brand bg-transparent border-0 m-0 p-0 text-primary\" name=\"search\" style=\"font-size: 15px\">";
 						echo "Prendre un nouveau rendez-vous";
 						echo "</button>";
 						echo "</form>";
-						echo "</p>";
+						echo "</p></li></ul>";
 					}
-					?>
-				</div>
+				} else {
+					echo "<img src=\"public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\" style=\"transform: rotate(-14.17deg);\">";
+					echo "<p>";
+					echo "Aucun rendez-vous à venir<br>";
+					echo "<form method=\"post\">";
+					echo "<button class=\"navbar-brand bg-transparent border-0 m-0 p-0 text-primary\" name=\"search\" style=\"font-size: 15px\">";
+					echo "Prendre un nouveau rendez-vous";
+					echo "</button>";
+					echo "</form>";
+					echo "</p>";
+				}
+				?>
 			</div>
 		</div>
-	</div>
+	</main>
 </body>
 
 </html>
