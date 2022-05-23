@@ -4,10 +4,6 @@ require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
 require_once LIBRARY_PATH . '/exceptions.php';
 
-if (array_key_exists('homepage', $_POST)) {
-  // redirect('index.php');
-}
-
 if (array_key_exists('connection', $_POST)) {
   redirect('login.php');
 }
@@ -51,7 +47,7 @@ usort($specialties, function ($a, $b) {
   </div>
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="">DoctoLibertain</a>
+      <a class="navbar-brand" href="index.php">DoctoLibertain</a>
       <div class="d-flex justify-content-end align-items-center">
         <button class="btn btn-light" id="btn-pro" disabled>
           Vous êtes un professionnel de santé ?
