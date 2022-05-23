@@ -6,19 +6,25 @@ require_once LIBRARY_PATH . '/common.php';
 $db = new Database();
 
 if (array_key_exists('register', $_POST)) {
+    $error_email = false;
+
     $firstname = $_POST['firstnameRegister'];
     $lastname = $_POST['lastnameRegister'];
     $email = $_POST['emailRegister'];
+    $emailConf = $_POST['emailRegisterConf'];
     $phoneNumber = $_POST['phoneRegister'];
     $password = $_POST['passwordRegister'];
 
-
-    try {
-        $db->createUser($firstname, $lastname, $email, $phoneNumber, $password);
-        $db->connectUser($email, $password);
-        redirect('user.php');
-    } catch (AuthenticationException $_) {
-    } catch (DuplicateEmailException $_) {
+    if($email == $emailConf){
+        try {
+            $db->createUser($firstname, $lastname, $email, $phoneNumber, $password);
+            $db->connectUser($email, $password);
+            redirect('user.php');
+        } catch (AuthenticationException $_) {
+        } catch (DuplicateEmailException $_) {
+        }
+    }else{
+        $error_email = true;
     }
 }
 
@@ -85,7 +91,13 @@ if (array_key_exists('connection', $_POST)) {
             </div>
         </div>
     </nav>
-
+    <?php
+        if($error_email){
+            echo "<div class=\"alert alert-danger\" role=\"alert\">";
+            echo "L'email et l'email de confirmation sont différentes !!";
+            echo "</div>";
+        }
+    ?>
     <div class="container-fluid d-flex justify-content-center">
         <div class="card my-4" style="width: 32rem;">
             <div class="card-body">
