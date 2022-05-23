@@ -23,7 +23,8 @@ if (array_key_exists('disconnect', $_POST)) {
 try {
 	$access_token = $_COOKIE['docto_session'];
 	$infos = $db->getUserInfos($access_token);
-} catch (Exception $_) {
+	var_dump($access_token);
+} catch (Exception | Error $_) {
 	redirect('login.php');
 }
 
