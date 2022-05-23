@@ -117,7 +117,10 @@ if (array_key_exists('connection', $_POST)) {
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input type="password" class="form-control" placeholder="Choisissez un mot de passe" id="passwordRegister" name="passwordRegister" pattern=".+" required>
+                            <input type="password" class="form-control" placeholder="Choisissez un mot de passe" id="passwordRegister" name="passwordRegister" pattern=".{8,256}" required>
+                            <small id="passwordHelpInline" class="text-muted">
+                                Must be 8-256 characters long.
+                            </small>
                         </div>
                     </div>
 
