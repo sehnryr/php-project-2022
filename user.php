@@ -19,7 +19,7 @@ if (array_key_exists('disconnect', $_POST)) {
 	redirect('index.php');
 }
 
-if (array_key_exists('cancelAppointment', $_POST)){
+if (array_key_exists('cancelAppointment', $_POST)) {
 	$db->cancelAppointment($_POST['cancelAppointment']);
 }
 
@@ -36,47 +36,52 @@ try {
 <html lang="fr">
 
 <head>
-	<meta charset="UTF-8">
+	<meta charset="UTF-8" />
 	<title>Doctolibertain</title>
-	<link rel="stylesheet" href="public_html/css/index.css">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Fuggles&display=swap" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Fuggles&display=swap" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="public_html/css/index.css" />
+	<link rel="stylesheet" href="public_html/css/floating-square-animation.css" />
 </head>
 
-<body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body class="d-flex flex-column">
+	<div class="area">
+		<ul class="circles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<nav class="navbar navbar-expand-lg">
 		<div class="container-fluid">
-			<form method="post">
-				<button class="navbar-brand bg-transparent border-0" name="homepage" id="homepage" style="font-family: 'Fuggles', cursive;font-size: 45px;">
-					DoctoLibertain
-				</button>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-			</form>
-			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-				<div class="nav-item">
-					<h4 class="text-white"><?php echo $infos['firstname']; ?> <?php echo $infos['lastname']; ?></h4>
-				</div>
-				<div class="nav-item mt-3	">
-					<form method="post">
-						<button class="nav-link container-fluid bg-transparent border-0" name="disconnect">
-							<ul class="list-inline">
-								<li class="list-inline-item"><img src="public_html/img/power_settings_new_FILL0_wght400_GRAD0_opsz48.svg" alt="déconnection"></li>
-								<li class="list-inline-item">
-									<p class="text-white">Déconnexion</p>
-								</li>
-							</ul>
-						</button>
-					</form>
-				</div>
+			<a class="navbar-brand" href="index.php">DoctoLibertain</a>
+			<div class="d-flex justify-content-end align-items-center">
+				<div class="text-white fs-3 me-2"><?php echo $infos['firstname'] . " " . $infos['lastname']; ?></div>
+				<form method="POST">
+					<button class="btn btn-outline-light ms-2" name="disconnect">
+						<div class="d-flex align-items-center">
+							<img class="me-2" style="height: 2rem;" src="public_html/img/power_settings_new_FILL0_wght400_GRAD0_opsz48.svg">
+							<div class="d-flex flex-column align-items-start">
+								<span>Déconnexion</span>
+							</div>
+						</div>
+					</button>
+				</form>
 			</div>
 		</div>
 	</nav>
 	<div class="container-fluid">
-		<div class="row">	
+		<div class="row">
 			<!-- Rendez-vous passé -->
 			<div class="col-3 d-flex flex-column align-items-start justify-content-center" style="background-color: #C7D0D9; height: 88.2vh">
 				<h5 class="mt-4 text-decoration-underline">Voir les rendez-vous passés :</h5>
@@ -145,7 +150,7 @@ try {
 								echo "Spécialté : " . $db->getDoctorSpecialty($appointement['doctorid']);
 								echo "</p>";
 								echo "<form method=\"post\">";
-								echo "<button class=\"bg-danger text-white border-0\" name=\"cancelAppointment\" style=\"transform: translate(7vw)\" value=\"". $appointement['id'] ."\">";
+								echo "<button class=\"bg-danger text-white border-0\" name=\"cancelAppointment\" style=\"transform: translate(7vw)\" value=\"" . $appointement['id'] . "\">";
 								echo "Annuler le rdv ?";
 								echo "</button>";
 								echo "</form>";
