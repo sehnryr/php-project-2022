@@ -471,7 +471,7 @@ class Database
      */
     public function getAppointmentsForASpecialty(int $id): ?array
     {
-        $request = 'SELECT a.id, a.date_time, d.id, d.firstname, d.lastname, s.name FROM appointments a 
+        $request = 'SELECT a.id "appoint_id", a.date_time, d.id "doctor_id", d.firstname, d.lastname, s.name FROM appointments a 
                     LEFT JOIN doctors d ON a.doctorid = d.id LEFT JOIN specialties s ON d.specialty_id = s.id 
                     WHERE userid IS NULL AND s.id = :id';
 
@@ -542,8 +542,8 @@ class Database
         $statement->bindParam(':id', $id);
         $statement->execute();
 
-        $result = $statement->fetch(PDO::FETCH_OBJ);
-
+        $result = $statement->fetch(PDO::FETCH_OBJ)->userid;
+        
         if($result != NULL){
             return true;
         }else{
@@ -561,7 +561,7 @@ class Database
      */
     public function setAppointment(int $id, int $userid): bool
     {
-        if($this->appointmentIsTaken($id)){
+        if($this->appointmentIsTaken($id)){  
             return false;
         }else{
             if(strtotime($this->getAppointmentsDate($id)) > time()){

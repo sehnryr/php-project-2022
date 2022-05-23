@@ -4,6 +4,8 @@ require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
 require_once LIBRARY_PATH . '/exceptions.php';
 
+$db = new Database();
+
 if (array_key_exists('homepage', $_POST)) {
   redirect('');
 }
@@ -12,7 +14,15 @@ if (array_key_exists('connection', $_POST)) {
   redirect('login.php');
 }
 
-$db = new Database();
+if (array_key_exists('setAppointment', $_POST)) {
+  try {
+    $access_token = $_COOKIE['docto_session'];
+    $infos = $db->getUserInfos($access_token);
+    $db->setAppointment($_POST['setAppointment'], $infos['id']);
+  } catch (Exception | Error $_) {
+    redirect('login.php');
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -95,6 +105,11 @@ $db = new Database();
     echo "<h5 class=\"card-title\">" . $appoint['firstname'] . " " . $appoint['lastname'] . "</h5>";
     echo "<h6 class=\"card-subtitle mb-2 text-muted\">" . $appoint['name'] . "</h6>";
     echo "<p class=\"card-text\">" . $appoint['date_time'] . "</p>";
+    echo "<form method=\"post\">";
+		echo "<button class=\"bg-info text-white border-0\" name=\"setAppointment\" style=\"transform: translate(7vw)\" value=\"". $appoint['appoint_id'] ."\">";
+		echo "Réserver le rdv";
+		echo "</button>";
+		echo "</form>";
     echo "</div>";
     echo "</div>";
   }
