@@ -4,10 +4,6 @@ require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
 require_once LIBRARY_PATH . '/exceptions.php';
 
-if (array_key_exists('connection', $_POST)) {
-  redirect('login.php');
-}
-
 $db = new Database();
 $specialties = $db->getAllSpecialties();
 usort($specialties, function ($a, $b) {
@@ -52,17 +48,15 @@ usort($specialties, function ($a, $b) {
         <button class="btn btn-light" id="btn-pro" disabled>
           Vous êtes un professionnel de santé ?
         </button>
-        <form method="POST">
-          <button class="btn btn-outline-light ms-2" type="submit" name="connection">
-            <div class="d-flex align-items-center">
-              <img class="me-2" style="height: 2rem;" src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg">
-              <div class="d-flex flex-column align-items-start">
-                <span>Se connecter</span>
-                <small>Gérer mes rdv</small>
-              </div>
+        <a class="btn btn-outline-light ms-2" href="login.php">
+          <div class="d-flex align-items-center">
+            <img class="me-2" style="height: 2rem;" src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg">
+            <div class="d-flex flex-column align-items-start">
+              <span>Se connecter</span>
+              <small>Gérer mes rdv</small>
             </div>
-          </button>
-        </form>
+          </div>
+        </a>
       </div>
     </div>
   </nav>
