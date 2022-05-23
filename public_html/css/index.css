@@ -30,6 +30,8 @@ button img {
     color: #f8f9fa;
 }
 
+a:focus img,
+a:hover img,
 button:focus img,
 button:hover img {
     filter: invert(84%);
