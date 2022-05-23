@@ -56,15 +56,17 @@ usort($specialties, function ($a, $b) {
         <button class="btn btn-light" id="btn-pro" disabled>
           Vous êtes un professionnel de santé ?
         </button>
-        <a class="btn btn-outline-light ms-2" type="button" href="login.html">
-          <div class="d-flex align-items-center">
-            <img class="me-2" style="height: 2rem;" src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg">
-            <div class="d-flex flex-column align-items-start">
-              <span>Se connecter</span>
-              <small>Gérer mes rdv</small>
+        <form method="POST">
+          <button class="btn btn-outline-light ms-2" type="submit" name="connection">
+            <div class="d-flex align-items-center">
+              <img class="me-2" style="height: 2rem;" src="public_html/img/person_FILL1_wght400_GRAD0_opsz48.svg">
+              <div class="d-flex flex-column align-items-start">
+                <span>Se connecter</span>
+                <small>Gérer mes rdv</small>
+              </div>
             </div>
-          </div>
-        </a>
+          </button>
+        </form>
       </div>
     </div>
   </nav>
