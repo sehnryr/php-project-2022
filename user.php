@@ -6,17 +6,17 @@ require_once LIBRARY_PATH . '/common.php';
 $db = new Database();
 
 if (array_key_exists('homepage', $_POST)) {
-	redirect('');
+	redirect('index.php');
 }
 
 if (array_key_exists('search', $_POST)) {
-	redirect('');
+	redirect('search.php');
 }
 
 // bind button 'disconnect' to this condition.
 if (array_key_exists('disconnect', $_POST)) {
 	$db->disconnectUser();
-	redirect('');
+	redirect('index.php');
 }
 
 
