@@ -191,6 +191,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		die(json_encode(array(
 			'message' => 'Appointment claimed successfully.'
 		)));
+		break;
 	case 'appointment' . 'DELETE':
 		$appointment_id = $_GET['id'];
 
