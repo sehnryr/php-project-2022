@@ -157,7 +157,6 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		die(json_encode($specialties));
 		break;
 	case 'appointments' . 'GET':
-
 		$appointments = $db->getAllFreeAppointments();
 
 		if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
@@ -174,6 +173,8 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		http_response_code(200);
 		die(json_encode($appointments));
 		break;
+	case 'appointment' . 'PUT':
+	case 'appointment' . 'DELETE':
 	default:
 		http_response_code(404);
 		die();
