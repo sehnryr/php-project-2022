@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 require_once 'resources/config.php';
 require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
@@ -12,7 +10,6 @@ if (array_key_exists('setAppointment', $_POST)) {
   try {
     $access_token = $_COOKIE['docto_session'];
     $infos = $db->getUserInfos($access_token);
-    echo $_POST['setAppointment'];
     $db->setAppointment($_POST['setAppointment'], $infos['id']);
   } catch (Exception | Error $_) {
     redirect('login.php');
