@@ -116,8 +116,8 @@ try {
 							echo "<input type=\"text\" name=\"spe\" value=\"" . $appointment['specialty_id'] . "\" hidden>";
 							echo "<input type=\"text\" name=\"nom\" value=\"" . $appointment['firstname'] . " " . $appointment['lastname'] . "\" hidden>";
 							echo "<input type=\"text\" name=\"ou\" value=\"" . $pcode . "\" hidden>";
-							echo "<button class=\"bg-info text-black border-0\" name=\"reTakeRDV\">";
-							echo "Reprendre un RDV ?";
+							echo "<button class=\" border-0\" style=\"border-radius:5px; width:10em; background-color: #F6C844;\" name=\"reTakeRDV\">";
+							echo "  Reprendre un RDV ?  ";
 							echo "</button>";
 							echo "</form>";
 							echo "</div>";
