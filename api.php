@@ -146,10 +146,15 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 			APIErrors::invalidGrant();
 		}
 		break;
-	case 'specialties' . 'GET':
-		$specialities = $db->getAllSpecialties();
+	case 'doctors' . 'GET':
+		$doctorsInfo = $db->getDoctorsAndSpecialties();
 		http_response_code(200);
-		die(json_encode($specialities));
+		die(json_encode($doctorsInfo));
+		break;
+	case 'specialties' . 'GET':
+		$specialties = $db->getAllSpecialties();
+		http_response_code(200);
+		die(json_encode($specialties));
 		break;
 	default:
 		http_response_code(404);

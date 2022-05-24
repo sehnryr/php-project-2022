@@ -368,7 +368,7 @@ class Database
      */
     public function getDoctorsAndSpecialties(): array
     {
-        $request = 'SELECT * FROM doctors d
+        $request = 'SELECT d.id, d.firstname, d.lastname, d.postal_code, d.specialty_id, s.name AS specialty_name FROM doctors d
                         LEFT JOIN specialties s
                         ON d.specialty_id = s.id';
 
