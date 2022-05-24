@@ -174,7 +174,8 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		die(json_encode($appointments));
 		break;
 	case 'appointment' . 'PUT':
-		$appointment_id = $_POST['id'];
+		parse_str(file_get_contents('php://input'), $_PUT);
+		$appointment_id = $_PUT['id'];
 
 		$authorization = getAuthorizationToken();
 		try {
@@ -193,7 +194,8 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		)));
 		break;
 	case 'appointment' . 'DELETE':
-		$appointment_id = $_GET['id'];
+		parse_str(file_get_contents('php://input'), $_DELETE);
+		$appointment_id = (int) $_DELETE['id'];
 
 		$authorization = getAuthorizationToken();
 		if (!$db->verifyUserAccessToken($authorization)) {
