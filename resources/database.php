@@ -546,14 +546,14 @@ class Database
     /**
      * Cancel an appointment which is not passed
      * 
-     * @param id $id of the appointment
+     * @param int $id of the appointment
      * 
      * @return bool return true if it was made or false if it wasn't
      */
     public function cancelAppointment(int $id): bool
     {
         $date = strtotime($this->getAppointmentsDate($id));
-        if($date > time()){
+        if ($date > time()) {
             $request = 'UPDATE appointments set userid = NULL where id = :id';
 
             $statement = $this->PDO->prepare($request);
@@ -561,7 +561,7 @@ class Database
             $statement->execute();
 
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -569,7 +569,7 @@ class Database
     /**
      * Gets if the appointment is already taken
      * 
-     * @param id $id of the appointment
+     * @param int $id of the appointment
      * 
      * @return bool return true if take or false if free
      */
@@ -583,9 +583,9 @@ class Database
 
         $result = $statement->fetch(PDO::FETCH_OBJ)->userid;
 
-        if($result != NULL){
+        if ($result != NULL) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -593,26 +593,26 @@ class Database
     /**
      * Reserve an appointment which is not passed
      * 
-     * @param id $id of the appointment
-     * @param userid $userid 
+     * @param int $id of the appointment
+     * @param int $userid 
      * 
      * @return bool return true if it was made or false if it wasn't
      */
     public function setAppointment(int $id, int $userid): bool
     {
-        if($this->appointmentIsTaken($id)){  
+        if ($this->appointmentIsTaken($id)) {
             return false;
-        }else{
-            if(strtotime($this->getAppointmentsDate($id)) > time()){
+        } else {
+            if (strtotime($this->getAppointmentsDate($id)) > time()) {
                 $request = 'UPDATE appointments set userid = :userid where id = :id';
 
                 $statement = $this->PDO->prepare($request);
                 $statement->bindParam(':userid', $userid);
                 $statement->bindParam(':id', $id);
                 $statement->execute();
-    
+
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
