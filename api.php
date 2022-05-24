@@ -174,7 +174,40 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		die(json_encode($appointments));
 		break;
 	case 'appointment' . 'PUT':
+		$appointment_id = $_POST['id'];
+
+		$authorization = getAuthorizationToken();
+		try {
+			$userInfos = $db->getUserInfos($authorization);
+			$userId = $userInfos['id'];
+			if (!$db->setAppointment($appointment_id, $userId)) {
+				throw new Error();
+			}
+		} catch (AuthenticationException | Error $_) {
+			APIErrors::invalidHeader();
+		}
+
+		http_response_code(200);
+		die(json_encode(array(
+			'message' => 'Appointment claimed successfully.'
+		)));
 	case 'appointment' . 'DELETE':
+		$appointment_id = $_GET['id'];
+
+		$authorization = getAuthorizationToken();
+		if (!$db->verifyUserAccessToken($authorization)) {
+			APIErrors::invalidHeader();
+		}
+
+		if (!$db->cancelAppointment($appointment_id)) {
+			APIErrors::internalError();
+		}
+
+		http_response_code(200);
+		die(json_encode(array(
+			'message' => 'Appointment cancelled successfully.'
+		)));
+		break;
 	default:
 		http_response_code(404);
 		die();
