@@ -39,7 +39,7 @@ try {
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Doctolibertain</title>
+	<title><?php echo $infos['firstname'] . " " . $infos['lastname']; ?></title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Fuggles&display=swap" rel="stylesheet" />
@@ -47,6 +47,7 @@ try {
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="public_html/css/index.css" />
 	<link rel="stylesheet" href="public_html/css/floating-square-animation.css" />
+	<link rel="icon" type="image/png" href="public_html/img/raoul.png"/> 
 </head>
 
 <body class="d-flex flex-column">
@@ -84,8 +85,8 @@ try {
 	</nav>
 	<main class="flex-grow-1 row">
 		<!-- Rendez-vous passé -->
-		<div class="col-3 ms-1 d-flex flex-column align-items-start justify-content-center" style="background-color: #C7D0D9;">
-			<h5 class="mt-4 text-decoration-underline">Voir les rendez-vous passés :</h5>
+		<div class="col-3 ms-1 d-flex flex-column align-items-start justify-content-center" style="background-color: #C7D0D9; width:22em;">
+			<h5 class="mt-4 text-decoration-underline" style="margin: 1.5em;"> Voir les rendez-vous passés :</h5>
 			<div class="col mt-2">
 				<?php
 				$put_an_appointment = false;
@@ -97,7 +98,7 @@ try {
 							$date = explode(" ", $appointment['date_time']);
 							$pcode = $db->getDoctorPCode($appointment['doctor_id']);
 
-							echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
+							echo "<div class=\"card mt-2\" style=\"width: auto; margin:1em\">";
 							echo "<div class=\"card-body\">";
 							echo "<h5 class=\"card-title\"><span class=\"badge rounded-pill text-black\" style=\"background-color: #C4C4C4;\">";
 							echo "<img src=\"public_html/img/calendar_month_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\">";
@@ -169,10 +170,10 @@ try {
 					if (!$put_an_appointment) {
 						echo "<ul class=\"list-inline\"><li class=\"list-inline-item\">";
 						echo "<img src=\"public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg\" alt=\"calendar\" style=\"transform: rotate(-14.17deg) translate(0, -2vh);;\">";
-						echo "</li><li class=\"list-inline-item\"><p>";
+						echo "</li><li class=\"list-inline-item\"><p style=\"font-size:20px\">";
 						echo "Aucun rendez-vous à venir<br>";
 						echo "<form method=\"post\">";
-						echo "<button class=\"navbar-brand bg-transparent border-0 m-0 p-0 text-primary\" name=\"search\" style=\"font-size: 15px\">";
+						echo "<button class=\"navbar-brand bg-transparent border-0 m-0 p-0 text-primary\" name=\"search\" style=\"font-size: 35px\">";
 						echo "Prendre un nouveau rendez-vous";
 						echo "</button>";
 						echo "</form>";
