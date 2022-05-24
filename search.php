@@ -92,6 +92,7 @@ $specialties = $db->getAllSpecialties();
         $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
           foreach ($appoints as $appoint) {
             if(strtotime($appoint['date_time']) <= time()) continue;
+            if(!empty($appoint['user_id'])) continue;
             $metinput = metaphone($_GET['nom']);
             $metappoint = metaphone($appoint['firstname']. " " . $appoint['lastname']);
             if($metinput == $metappoint || stristr($metappoint, $metinput)){
@@ -131,6 +132,7 @@ $specialties = $db->getAllSpecialties();
           $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
           foreach ($appoints as $appoint) {
             if(strtotime($appoint['date_time']) <= time()) continue;
+            if(!empty($appoint['user_id'])) continue;
             if(!empty($_GET['ou'])){
               if ($db->getDoctorPCode($appoint['doctor_id']) == $_GET['ou']) {  ?>
                 <div class="card m-1" style="width: 18rem;">
