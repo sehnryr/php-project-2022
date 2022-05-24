@@ -71,7 +71,7 @@ class Database
      * 
      * @return bool
      */
-    private function verifyUserCredentials(
+    public function verifyUserCredentials(
         string $email,
         string $password
     ): bool {
@@ -87,7 +87,7 @@ class Database
      * 
      * @return bool
      */
-    private function verifyUserAccessToken(string $access_token): bool
+    public function verifyUserAccessToken(string $access_token): bool
     {
         $request = 'SELECT * FROM users
                         WHERE access_token = :access_token';
