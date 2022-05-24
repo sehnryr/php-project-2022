@@ -1,4 +1,4 @@
-$.ajax("api.php/specialities", {
+$.ajax("api.php/specialties", {
     method: "GET"
 }).done((data) => {
     console.log(data);
