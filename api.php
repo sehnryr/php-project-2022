@@ -156,6 +156,24 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		http_response_code(200);
 		die(json_encode($specialties));
 		break;
+	case 'appointments' . 'GET':
+
+		$appointments = $db->getAllFreeAppointments();
+
+		if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+			try {
+				$authorization = getAuthorizationToken();
+				$userInfos = $db->getUserInfos($authorization);
+				$userId = $userInfos['id'];
+				$userAppointments = $db->getUserAppointments($userId);
+				$appointments = array_merge($appointments, $userAppointments);
+			} catch (Exception | Error $_) {
+			}
+		}
+
+		http_response_code(200);
+		die(json_encode($appointments));
+		break;
 	default:
 		http_response_code(404);
 		die();
