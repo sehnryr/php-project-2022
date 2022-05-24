@@ -457,6 +457,7 @@ class Database
                             d.id AS "doctor_id", 
                             d.firstname, 
                             d.lastname, 
+                            d.postal_code,
                             s.id AS "specialty_id", 
                             s.name AS "specialty_name"
                         FROM appointments a 
