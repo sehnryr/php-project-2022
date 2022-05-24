@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 require_once 'resources/config.php';
 require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
@@ -10,6 +12,7 @@ if (array_key_exists('setAppointment', $_POST)) {
   try {
     $access_token = $_COOKIE['docto_session'];
     $infos = $db->getUserInfos($access_token);
+    echo $_POST['setAppointment'];
     $db->setAppointment($_POST['setAppointment'], $infos['id']);
   } catch (Exception | Error $_) {
     redirect('login.php');
@@ -99,10 +102,10 @@ $specialties = $db->getAllSpecialties();
                   <div class="card m-1" style="width: 18rem;">
                     <div class="card-body">
                       <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
-                      <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                      <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['specialty_name']; ?></h6>
                       <p class="card-text"><?php echo $appoint['date_time']; ?></p>
                       <form method="POST">
-                        <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                        <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['id']; ?>">Réserver le rdv</button>
                       </form>
                     </div>
                   </div>
@@ -113,10 +116,10 @@ $specialties = $db->getAllSpecialties();
                   <div class="card m-1" style="width: 18rem;">
                     <div class="card-body">
                       <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
-                      <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                      <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['specialty_name']; ?></h6>
                       <p class="card-text"><?php echo $appoint['date_time']; ?></p>
                       <form method="POST">
-                        <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                        <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['id']; ?>">Réserver le rdv</button>
                       </form>
                     </div>
                   </div>
@@ -134,10 +137,10 @@ $specialties = $db->getAllSpecialties();
                 <div class="card m-1" style="width: 18rem;">
                   <div class="card-body">
                     <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['specialty_name']; ?></h6>
                     <p class="card-text"><?php echo $appoint['date_time']; ?></p>
                     <form method="POST">
-                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['id']; ?>">Réserver le rdv</button>
                     </form>
                   </div>
                 </div>
@@ -148,10 +151,10 @@ $specialties = $db->getAllSpecialties();
                 <div class="card m-1" style="width: 18rem;">
                   <div class="card-body">
                     <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['specialty_name']; ?></h6>
                     <p class="card-text"><?php echo $appoint['date_time']; ?></p>
                     <form method="POST">
-                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['id']; ?>">Réserver le rdv</button>
                     </form>
                   </div>
                 </div>
@@ -170,10 +173,10 @@ $specialties = $db->getAllSpecialties();
                 <div class="card m-1" style="width: 18rem;">
                   <div class="card-body">
                     <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['specialty_name']; ?></h6>
                     <p class="card-text"><?php echo $appoint['date_time']; ?></p>
                     <form method="POST">
-                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['id']; ?>">Réserver le rdv</button>
                     </form>
                   </div>
                 </div>
@@ -184,10 +187,10 @@ $specialties = $db->getAllSpecialties();
                 <div class="card m-1" style="width: 18rem;">
                   <div class="card-body">
                     <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['specialty_name']; ?></h6>
                     <p class="card-text"><?php echo $appoint['date_time']; ?></p>
                     <form method="POST">
-                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['id']; ?>">Réserver le rdv</button>
                     </form>
                   </div>
                 </div>

@@ -11,3 +11,19 @@ $.ajax("api.php/specialties", {
         }
     });
 })
+
+if(getValues.get('nom') != null){
+    $('#nom').val(getValues.get('nom'));
+}
+
+if(getValues.get('ou') != null){
+    $('#ou').val(getValues.get('ou'));
+}
+
+$.ajax("api.php/appointments", {
+    method: "GET"
+}).done((data) => {
+    data.forEach(appointment => {
+        
+    });
+})
