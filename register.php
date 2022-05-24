@@ -51,6 +51,7 @@ if (array_key_exists('connection', $_POST)) {
     <link rel="stylesheet" href="public_html/css/index.css" />
     <link rel="stylesheet" href="public_html/css/floating-square-animation.css">
     <link rel="icon" type="image/png" href="public_html/img/raoul.png"/> 
+    <link rel="stylesheet" href="public_html/css/anim-button.css" />
 </head>
 
 <body class="d-flex flex-column">
@@ -133,7 +134,7 @@ if (array_key_exists('connection', $_POST)) {
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" name="register">M'inscrire</button>
+                    <button type="submit" class="btn btn-primary btn-anim" name="register">M'inscrire</button>
 
                 </form>
             </div>

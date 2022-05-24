@@ -44,6 +44,7 @@ if (isset($_POST['login'])) {
   <link rel="stylesheet" href="public_html/css/index.css" />
   <link rel="stylesheet" href="public_html/css/floating-square-animation.css" />
   <link rel="icon" type="image/png" href="public_html/img/raoul.png"/> 
+  <link rel="stylesheet" href="public_html/css/anim-button.css" />
 </head>
 
 <body class="d-flex flex-column">
@@ -88,14 +89,14 @@ if (isset($_POST['login'])) {
         <form method="post">
           <input id="emailLogin" name="emailLogin" type="text" class="form-control my-3" placeholder="Email" pattern=".{5,64}" required />
           <input type="password" id="passwordLogin" name="passwordLogin" class="form-control my-3" aria-describedby="passwordHelpInline" placeholder="Mot de passe" pattern=".{1,256}" required />
-          <button type="submit" name="login" class="btn btn-primary">Me connecter</button>
+          <button type="submit" name="login" class="btn btn-primary btn-anim">Me connecter</button>
         </form>
       </div>
     </div>
     <div class="card mb-4" style="width: 12rem">
       <div class="card-body">
         <h5 class="card-title">Pas de compte ?</h5>
-        <a class="btn btn-primary" href="register.php">M'inscrire</a>
+        <a class="btn btn-primary btn-anim" href="register.php">M'inscrire</a>
       </div>
     </div>
   </main>
