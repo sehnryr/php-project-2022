@@ -1,5 +1,14 @@
 import { createCookie, getCookie } from './utils.js'
 
+// onload if session cookie exists, redirect to user.html
+$(() => {
+	let cookie = getCookie('docto_session')
+	if (cookie.length > 0) {
+		let url = window.location.href.replace(/login\.html.*/i, 'user.html')
+		window.location.href = url
+	}
+})
+
 
 $("#loginForm").on("submit", (event) => {
 	event.preventDefault()
