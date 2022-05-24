@@ -483,6 +483,25 @@ class Database
     }
 
     /**
+     * Gets all the appointments free associate to a doctor name
+     * 
+     * @return array return an array with all appointment
+     */
+    public function getAllFreeAppointments(): ?array
+    {
+        $request = 'SELECT a.id "appoint_id", a.date_time, d.id "doctor_id", d.firstname, d.lastname, s.name FROM appointments a 
+                    LEFT JOIN doctors d ON a.doctorid = d.id LEFT JOIN specialties s ON d.specialty_id = s.id 
+                    WHERE userid IS NULL';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return (array) $result;
+    }
+
+    /**
      * Gets all the appointments free for a specialty 
      * 
      * @param string $id of a specialty

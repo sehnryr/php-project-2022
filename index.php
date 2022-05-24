@@ -63,11 +63,12 @@ usort($specialties, function ($a, $b) {
   <main class="flex-grow-1 d-flex justify-content-center align-items-start">
     <form class="input-group mt-5" action="search.php" method="get" style="max-width: 70%;">
       <select class="form-select" name="spe">
-        <option style="display:none;" selected disabled>Spécialité...</option>
+        <option style="display:none;" value="" selected>Spécialité...</option>
         <?php foreach ($specialties as $spe) { ?>
           <option value="<?php echo $spe['id']; ?>"><?php echo $spe['name']; ?></option>
         <?php } ?>
       </select>
+      <input type="text" class="form-control" placeholder="Nom du médecin" name="nom">
       <input type="text" class="form-control" placeholder="Où... (Code postal)" name="ou" pattern="\d{5}">
       <button class="btn btn-success" type="submit" id="search">Recherche</button>
     </form>

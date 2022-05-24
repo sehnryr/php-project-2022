@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 require_once 'resources/config.php';
 require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
@@ -74,50 +76,129 @@ usort($specialties, function ($a, $b) {
     <!--barre de recherche + image-->
     <form class="input-group my-5" action="search.php" method="get" style="max-width: 70%;">
       <select class="form-select" name="spe">
-        <option style="display:none;" disabled>Spécialité...</option>
+        <option style="display:none;" value="" <?php if(!empty($_GET['spe'])) echo 'disabled'; ?>>Spécialité...</option>
         <?php foreach ($specialties as $spe) { ?>
           <option value="<?php echo $spe['id']; ?>" <?php if ($spe['id'] == $_GET['spe']) echo 'selected'; ?>><?php echo $spe['name']; ?></option>
         <?php } ?>
       </select>
+      <input type="text" class="form-control" placeholder="Nom du médecin" name="nom" <?php if (isset($_GET['nom'])) echo 'value="' . $_GET['nom'] . '"'; ?>>
       <input type="text" class="form-control" placeholder="Où... (Code postal)" name="ou" pattern="\d{5}" <?php if (isset($_GET['ou'])) echo 'value="' . $_GET['ou'] . '"'; ?>>
       <button class="btn btn-success" type="submit" id="search">Recherche</button>
     </form>
     <!-- Résultat de recherche -->
     <div class="d-flex justify-content-center align-content-start flex-wrap">
       <?php
+      if(empty($_GET['spe']) && empty($_GET['nom'])){
+        redirect('index.php');
+      }
       $put_a_value = false;
-      if (empty($_GET['ou'])) {
+      if(!empty($_GET['spe']) && !empty($_GET['nom'])){
         $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
-        foreach ($appoints as $appoint) { ?>
-          <div class="card m-1" style="width: 18rem;">
-            <div class="card-body">
-              <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
-              <p class="card-text"><?php echo $appoint['date_time']; ?></p>
-              <form method="POST">
-                <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
-              </form>
-            </div>
-          </div>
-          <?php
-          $put_a_value = true;
-        }
-      } else {
-        $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
-        foreach ($appoints as $appoint) {
-          if ($db->getDoctorPCode($appoint['doctor_id']) == $_GET['ou']) {  ?>
-            <div class="card m-1" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
-                <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
-                <p class="card-text"><?php echo $appoint['date_time']; ?></p>
-                <form method="POST">
-                  <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
-                </form>
-              </div>
-            </div>
-      <?php
-            $put_a_value = true;
+          foreach ($appoints as $appoint) {
+            $metinput = metaphone($_GET['nom']);
+            $metappoint = metaphone($appoint['firstname']. " " . $appoint['lastname']);
+            if($metinput == $metappoint || stristr($metappoint, $metinput)){
+              if(!empty($_GET['ou'])){
+                if ($db->getDoctorPCode($appoint['doctor_id']) == $_GET['ou']) {  ?>
+                  <div class="card m-1" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
+                      <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                      <p class="card-text"><?php echo $appoint['date_time']; ?></p>
+                      <form method="POST">
+                        <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                      </form>
+                    </div>
+                  </div>
+                  <?php
+                    $put_a_value = true;
+                  }
+                }else{ ?>
+                  <div class="card m-1" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
+                      <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                      <p class="card-text"><?php echo $appoint['date_time']; ?></p>
+                      <form method="POST">
+                        <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                      </form>
+                    </div>
+                  </div>
+                  <?php
+                  $put_a_value = true;
+              }
+            }
+          }
+      }else{
+        if(!empty($_GET['spe'])){
+          $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
+          foreach ($appoints as $appoint) {
+            if(!empty($_GET['ou'])){
+              if ($db->getDoctorPCode($appoint['doctor_id']) == $_GET['ou']) {  ?>
+                <div class="card m-1" style="width: 18rem;">
+                  <div class="card-body">
+                    <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                    <p class="card-text"><?php echo $appoint['date_time']; ?></p>
+                    <form method="POST">
+                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                    </form>
+                  </div>
+                </div>
+                <?php
+                  $put_a_value = true;
+                }
+              }else{ ?>
+                <div class="card m-1" style="width: 18rem;">
+                  <div class="card-body">
+                    <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                    <p class="card-text"><?php echo $appoint['date_time']; ?></p>
+                    <form method="POST">
+                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                    </form>
+                  </div>
+                </div>
+                <?php
+                $put_a_value = true;
+            }
+          }
+        }else{ //not empty get nom
+          $appoints = $db->getAllFreeAppointments();
+          foreach ($appoints as $appoint) {
+            $metinput = metaphone($_GET['nom']);
+            $metappoint = metaphone($appoint['firstname']. " " . $appoint['lastname']);
+            if($metinput == $metappoint || stristr($metappoint, $metinput)){
+              if(!empty($_GET['ou'])){
+                if ($db->getDoctorPCode($appoint['doctor_id']) == $_GET['ou']) {  ?>
+                <div class="card m-1" style="width: 18rem;">
+                  <div class="card-body">
+                    <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                    <p class="card-text"><?php echo $appoint['date_time']; ?></p>
+                    <form method="POST">
+                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                    </form>
+                  </div>
+                </div>
+                <?php
+                  $put_a_value = true;
+                }
+              }else{ ?>
+                <div class="card m-1" style="width: 18rem;">
+                  <div class="card-body">
+                    <h5 class="card-title"><?php echo $appoint['firstname'] . " " . $appoint['lastname']; ?></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $appoint['name']; ?></h6>
+                    <p class="card-text"><?php echo $appoint['date_time']; ?></p>
+                    <form method="POST">
+                      <button class="btn btn-primary" name="setAppointment" value="<?php echo $appoint['appoint_id']; ?>">Réserver le rdv</button>
+                    </form>
+                  </div>
+                </div>
+                <?php
+                $put_a_value = true;
+              }
+            }
           }
         }
       }
