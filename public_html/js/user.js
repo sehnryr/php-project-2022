@@ -20,16 +20,9 @@ $(() => {
 				Authorization: 'Bearer ' + cookie
 			}
 		}).done((data) => {
-			let result = []
+			// past appointments
 			data.forEach((element) => {
 				if (element['user_id'] != null && new Date(element['date_time']) < new Date()) {
-					result.push(element)
-				}
-			})
-
-			if (result.length > 0) {
-				$("#pastAppointments").html('')
-				result.forEach((element) => {
 					let card = `
 					<div class="card mt-2" style="width: auto; margin:1em">
 					<div class="card-body">
@@ -54,8 +47,8 @@ $(() => {
 						</div></div>`
 
 					$("#pastAppointments").append(card)
-				})
-			}
+				}
+			})
 		})
 	}
 })
