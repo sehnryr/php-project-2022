@@ -27,7 +27,6 @@
 			<li></li>
 			<li></li>
 		</ul>	
-		<img class="home-image"src="public_html/img/TaeAugust07.svg"	/>
 	</div>
 	<nav class="navbar navbar-expand-lg">
 		<div class="container-fluid">
@@ -48,7 +47,7 @@
 			</div>
 		</div>
 	</nav>
-	<main class="flex-grow-1 d-flex justify-content-center align-items-start">
+	<main class="flex-grow-1 d-flex justify-content-center align-items-start  flex-wrap">
 		<div class="input-group mt-5" style="max-width: 70%;">
 			<select class="form-select" id="spe" name="spe">
 				<option style="display:none;" value="" selected>Spécialité...</option>
@@ -56,6 +55,9 @@
 			<input type="text" class="form-control" placeholder="Nom du médecin" id="nom" name="nom">
 		  	<input type="text" class="form-control" placeholder="Où... (Code postal)" id="ou" name="ou" pattern="\d{5}">
 		  	<button class="btn btn-success" type="submit" id="search">Recherche</button>
+		</div>
+		<div class="d-flex justify-content-center align-content-start flex-wrap" id="resultField">
+
 		</div>
 	</main>
 	<script src="public_html/js/search.js"></script>

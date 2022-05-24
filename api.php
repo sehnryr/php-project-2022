@@ -158,7 +158,6 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		break;
 	case 'appointments' . 'GET':
 		$appointments = $db->getAllFreeAppointments();
-
 		if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 			try {
 				$authorization = getAuthorizationToken();
@@ -167,11 +166,12 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 				$userAppointments = $db->getUserAppointments($userId);
 				$appointments = array_merge($appointments, $userAppointments);
 			} catch (Exception | Error $_) {
+				APIErrors::invalidGrant();
 			}
 		}
 
 		http_response_code(200);
-		die(json_encode($appointments));
+		die(json_encode(array_values($appointments)));
 		break;
 	case 'appointment' . 'PUT':
 		parse_str(file_get_contents('php://input'), $_PUT);
