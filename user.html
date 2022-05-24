@@ -57,5 +57,45 @@
 				</div>
 			</div>
 		</nav>
+		<main class="flex-grow-1 row">
+			<!-- Rendez-vous passé -->
+			<div
+				class="col-3 ms-1 d-flex flex-column align-items-start justify-content-center"
+				style="background-color: #c7d0d9; width: 22em"
+			>
+				<h5 class="mt-4 text-decoration-underline" style="margin: 1.5em">Voir les rendez-vous passés :</h5>
+				<div class="col mt-2" id="pastAppointments">
+					<p>Vous n'avez pas pris d'ancien rendez-vous avec DoctoLibertain</p>
+				</div>
+			</div>
+			<!-- Rendez-vous à venir -->
+			<div class="col d-flex align-items-center justify-content-center" style="background-color: #e9edf1">
+				<div id="appointments">
+					<ul class="list-inline">
+						<li class="list-inline-item">
+							<img
+								src="public_html/img/calendar_add_on_FILL0_wght400_GRAD0_opsz48.svg"
+								alt="calendar"
+								style="transform: rotate(-14.17deg) translate(0, -2vh)"
+							/>
+						</li>
+						<li class="list-inline-item">
+							<p style="font-size: 20px">
+								Aucun rendez-vous à venir
+								<br />
+								<a
+									class="navbar-brand bg-transparent border-0 m-0 p-0 text-primary"
+									name="search"
+									style="font-size: 35px"
+									href="index.html"
+								>
+									Prendre un nouveau rendez-vous
+								</a>
+							</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</main>
 	</body>
 </html>
