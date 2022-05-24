@@ -35,7 +35,7 @@ if (isset($_POST['login'])) {
 
 <head>
   <meta charset="UTF-8" />
-  <title>Se connecter a DoctoLibertain</title>
+  <title>Se connecter à DoctoLibertain</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fuggles&display=swap" rel="stylesheet" />
