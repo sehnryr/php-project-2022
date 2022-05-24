@@ -17,9 +17,6 @@ if (array_key_exists('setAppointment', $_POST)) {
 }
 
 $specialties = $db->getAllSpecialties();
-usort($specialties, function ($a, $b) {
-  return $a['name'] <=> $b['name'];
-})
 ?>
 <!DOCTYPE html>
 <html lang="fr">

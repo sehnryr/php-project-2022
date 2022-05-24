@@ -479,6 +479,10 @@ class Database
 
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+        usort($result, function ($a, $b) {
+            return $a['name'] <=> $b['name'];
+        });
+
         return $result;
     }
 

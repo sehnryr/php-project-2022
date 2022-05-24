@@ -27,4 +27,7 @@ function getCookie(c_name) {
 	return "";
 }
 
+function getSpecialities(){
+	
+}
 export { createCookie, getCookie }
