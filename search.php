@@ -91,6 +91,7 @@ $specialties = $db->getAllSpecialties();
       if(!empty($_GET['spe']) && !empty($_GET['nom'])){
         $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
           foreach ($appoints as $appoint) {
+            if(strtotime($appoint['date_time']) <= time()) continue;
             $metinput = metaphone($_GET['nom']);
             $metappoint = metaphone($appoint['firstname']. " " . $appoint['lastname']);
             if($metinput == $metappoint || stristr($metappoint, $metinput)){
@@ -129,6 +130,7 @@ $specialties = $db->getAllSpecialties();
         if(!empty($_GET['spe'])){
           $appoints = $db->getAppointmentsForASpecialty($_GET['spe']);
           foreach ($appoints as $appoint) {
+            if(strtotime($appoint['date_time']) <= time()) continue;
             if(!empty($_GET['ou'])){
               if ($db->getDoctorPCode($appoint['doctor_id']) == $_GET['ou']) {  ?>
                 <div class="card m-1" style="width: 18rem;">
@@ -162,6 +164,7 @@ $specialties = $db->getAllSpecialties();
         }else{ //not empty get nom
           $appoints = $db->getAllFreeAppointments();
           foreach ($appoints as $appoint) {
+            if(strtotime($appoint['date_time']) <= time()) continue;
             $metinput = metaphone($_GET['nom']);
             $metappoint = metaphone($appoint['firstname']. " " . $appoint['lastname']);
             if($metinput == $metappoint || stristr($metappoint, $metinput)){
