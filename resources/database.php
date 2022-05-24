@@ -548,13 +548,13 @@ class Database
     /**
      * Gets the date of the appointment
      * 
-     * @param id $id of the appointment
+     * @param int $id of the appointment
      * 
      * @return string date of the appointment
      */
     public function getAppointmentsDate(int $id): string
     {
-        $request = 'SELECT date_time from appointments a where a.id = :id';
+        $request = 'SELECT date_time FROM appointments WHERE id = :id';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':id', $id);
