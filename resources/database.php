@@ -428,9 +428,9 @@ class Database
      * 
      * @return string the specialty's name.
      */
-    public function getDoctorSpecialty(int $id): string
+    public function getDoctorSpecialty(int $id): ?array
     {
-        $request = 'SELECT s.name FROM specialties s 
+        $request = 'SELECT s.id, s.name FROM specialties s 
                         LEFT JOIN doctors d 
                         ON s.id = d.specialty_id 
                         WHERE d.id = :id';
@@ -439,9 +439,9 @@ class Database
         $statement->bindParam(':id', $id);
         $statement->execute();
 
-        $result = $statement->fetch(PDO::FETCH_OBJ);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $result->name;
+        return $result;
     }
 
     /**

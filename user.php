@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 require_once 'resources/config.php';
 require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
@@ -7,6 +9,10 @@ $db = new Database();
 
 if (array_key_exists('search', $_POST)) {
 	redirect('search.php');
+}
+
+if (array_key_exists('reTakeRDV', $_POST)) {
+	redirect('search.php?spe='. $_POST['spe'] ."&nom=". $_POST['nom'] ."&ou=". $_POST['ou']);
 }
 
 // bind button 'disconnect' to this condition.
@@ -90,6 +96,8 @@ try {
 							$put_an_appointment = true;
 							$date = explode(" ", $appointement['date_time']);
 							$doc = $db->getDoctorName($appointement['doctorid']);
+							$spe = $db->getDoctorSpecialty($appointement['doctorid']);
+							$pcode = $db->getDoctorPCode($appointement['doctorid']);
 
 							echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
 							echo "<div class=\"card-body\">";
@@ -103,8 +111,16 @@ try {
 							echo "Dr. " . $doc['firstname'] . " " . $doc['lastname'];
 							echo "</p>";
 							echo "<p class=\"card-text\">";
-							echo "Spécialté : " . $db->getDoctorSpecialty($appointement['doctorid']);
+							echo "Spécialté : " . $spe['name'];
 							echo "</p>";
+							echo "<form method=\"post\">";
+							echo "<input type=\"text\" name=\"spe\" value=\"". $spe['id'] ."\" hidden>";
+							echo "<input type=\"text\" name=\"nom\" value=\"". $doc['firstname'] ." ". $doc['lastname'] ."\" hidden>";
+							echo "<input type=\"text\" name=\"ou\" value=\"". $pcode ."\" hidden>";
+							echo "<button class=\"bg-info text-black border-0\" name=\"reTakeRDV\">";
+							echo "Reprendre un RDV ?";
+							echo "</button>";
+							echo "</form>";
 							echo "</div>";
 							echo "</div>";
 						}
@@ -129,6 +145,7 @@ try {
 							$put_an_appointment = true;
 							$date = explode(" ", $appointement['date_time']);
 							$doc = $db->getDoctorName($appointement['doctorid']);
+							$spe = $db->getDoctorSpecialty($appointement['doctorid']);
 
 							echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
 							echo "<div class=\"card-body\">";
@@ -142,7 +159,7 @@ try {
 							echo "Dr. " . $doc['firstname'] . " " . $doc['lastname'];
 							echo "</p>";
 							echo "<p class=\"card-text\">";
-							echo "Spécialté : " . $db->getDoctorSpecialty($appointement['doctorid']);
+							echo "Spécialté : " . $spe['name'];
 							echo "</p>";
 							echo "<form method=\"post\">";
 							echo "<button class=\"bg-danger text-white border-0\" name=\"cancelAppointment\" style=\"transform: translate(7vw)\" value=\"" . $appointement['id'] . "\">";

@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 require_once 'resources/config.php';
 require_once 'resources/database.php';
 require_once LIBRARY_PATH . '/common.php';
