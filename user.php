@@ -12,7 +12,7 @@ if (array_key_exists('search', $_POST)) {
 }
 
 if (array_key_exists('reTakeRDV', $_POST)) {
-	redirect('search.php?spe='. $_POST['spe'] ."&nom=". $_POST['nom'] ."&ou=". $_POST['ou']);
+	redirect('search.php?spe=' . $_POST['spe'] . "&nom=" . $_POST['nom'] . "&ou=" . $_POST['ou']);
 }
 
 // bind button 'disconnect' to this condition.
@@ -89,15 +89,13 @@ try {
 			<div class="col mt-2">
 				<?php
 				$put_an_appointment = false;
-				$appointements = $db->getAllAppointments($infos['id']);
-				if (!empty($appointements)) {
-					foreach ($appointements as $appointement) {
-						if (strtotime($appointement['date_time']) < time()) {
+				$appointments = $db->getUserAppointments($infos['id']);
+				if (!empty($appointments)) {
+					foreach ($appointments as $appointment) {
+						if (strtotime($appointment['date_time']) < time()) {
 							$put_an_appointment = true;
-							$date = explode(" ", $appointement['date_time']);
-							$doc = $db->getDoctorName($appointement['doctorid']);
-							$spe = $db->getDoctorSpecialty($appointement['doctorid']);
-							$pcode = $db->getDoctorPCode($appointement['doctorid']);
+							$date = explode(" ", $appointment['date_time']);
+							$pcode = $db->getDoctorPCode($appointment['doctor_id']);
 
 							echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
 							echo "<div class=\"card-body\">";
@@ -108,15 +106,15 @@ try {
 							echo $date[1];
 							echo "</span></h5>";
 							echo "<p class=\"card-text\">";
-							echo "Dr. " . $doc['firstname'] . " " . $doc['lastname'];
+							echo "Dr. " . $appointment['firstname'] . " " . $appointment['lastname'];
 							echo "</p>";
 							echo "<p class=\"card-text\">";
-							echo "Spécialté : " . $spe['name'];
+							echo "Spécialté : " . $appointment['specialty_name'];
 							echo "</p>";
 							echo "<form method=\"post\">";
-							echo "<input type=\"text\" name=\"spe\" value=\"". $spe['id'] ."\" hidden>";
-							echo "<input type=\"text\" name=\"nom\" value=\"". $doc['firstname'] ." ". $doc['lastname'] ."\" hidden>";
-							echo "<input type=\"text\" name=\"ou\" value=\"". $pcode ."\" hidden>";
+							echo "<input type=\"text\" name=\"spe\" value=\"" . $appointment['specialty_id'] . "\" hidden>";
+							echo "<input type=\"text\" name=\"nom\" value=\"" . $appointment['firstname'] . " " . $appointment['lastname'] . "\" hidden>";
+							echo "<input type=\"text\" name=\"ou\" value=\"" . $pcode . "\" hidden>";
 							echo "<button class=\"bg-info text-black border-0\" name=\"reTakeRDV\">";
 							echo "Reprendre un RDV ?";
 							echo "</button>";
@@ -139,13 +137,11 @@ try {
 			<div>
 				<?php
 				$put_an_appointment = false;
-				if (!empty($appointements)) {
-					foreach ($appointements as $appointement) {
-						if (strtotime($appointement['date_time']) > time()) {
+				if (!empty($appointments)) {
+					foreach ($appointments as $appointment) {
+						if (strtotime($appointment['date_time']) > time()) {
 							$put_an_appointment = true;
-							$date = explode(" ", $appointement['date_time']);
-							$doc = $db->getDoctorName($appointement['doctorid']);
-							$spe = $db->getDoctorSpecialty($appointement['doctorid']);
+							$date = explode(" ", $appointment['date_time']);
 
 							echo "<div class=\"card mt-2\" style=\"width: 18rem;\">";
 							echo "<div class=\"card-body\">";
@@ -156,13 +152,13 @@ try {
 							echo $date[1];
 							echo "</span></h5>";
 							echo "<p class=\"card-text\">";
-							echo "Dr. " . $doc['firstname'] . " " . $doc['lastname'];
+							echo "Dr. " . $appointment['firstname'] . " " . $appointment['lastname'];
 							echo "</p>";
 							echo "<p class=\"card-text\">";
-							echo "Spécialté : " . $spe['name'];
+							echo "Spécialté : " . $appointment['specialty_name'];
 							echo "</p>";
 							echo "<form method=\"post\">";
-							echo "<button class=\"bg-danger text-white border-0\" name=\"cancelAppointment\" style=\"transform: translate(7vw)\" value=\"" . $appointement['id'] . "\">";
+							echo "<button class=\"bg-danger text-white border-0\" name=\"cancelAppointment\" style=\"transform: translate(7vw)\" value=\"" . $appointment['id'] . "\">";
 							echo "Annuler le rdv ?";
 							echo "</button>";
 							echo "</form>";

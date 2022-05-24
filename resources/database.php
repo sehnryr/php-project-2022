@@ -445,22 +445,46 @@ class Database
     }
 
     /**
-     * Gets all the appointments associated to a user.
+     * Gets all the appointments.
      * 
-     * @param int $id
-     * 
-     * @return array return an array of doctorid and datetime for each appointement 
+     * @return array return an array of doctor id and datetime for each appointment 
      */
-    public function getAllAppointments(int $id): ?array
+    private function getAppointments(): ?array
     {
-        $request = 'SELECT id, doctorid, date_time FROM appointments 
-                        WHERE userid = :id';
+        $request = 'SELECT a.id, 
+                            a.date_time,
+                            a.userid AS "user_id",
+                            d.id AS "doctor_id", 
+                            d.firstname, 
+                            d.lastname, 
+                            s.id AS "specialty_id", 
+                            s.name AS "specialty_name"
+                        FROM appointments a 
+                        LEFT JOIN doctors d ON a.doctorid = d.id 
+                        LEFT JOIN specialties s ON d.specialty_id = s.id';
 
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':id', $id);
         $statement->execute();
 
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return (array) $result;
+    }
+
+    /**
+     * Gets all the appointments associated to a user.
+     * 
+     * @param int $id the user id.
+     * 
+     * @return array return an array of doctorid and datetime for each appointement 
+     */
+    public function getUserAppointments(int $id): ?array
+    {
+        $appointments = $this->getAppointments();
+
+        $result = array_filter($appointments, function ($v, $k) use ($id) {
+            return $v['user_id'] == $id;
+        }, ARRAY_FILTER_USE_BOTH);
 
         return (array) $result;
     }
@@ -493,14 +517,11 @@ class Database
      */
     public function getAllFreeAppointments(): ?array
     {
-        $request = 'SELECT a.id "appoint_id", a.date_time, d.id "doctor_id", d.firstname, d.lastname, s.name FROM appointments a 
-                    LEFT JOIN doctors d ON a.doctorid = d.id LEFT JOIN specialties s ON d.specialty_id = s.id 
-                    WHERE userid IS NULL';
+        $appointments = $this->getAppointments();
 
-        $statement = $this->PDO->prepare($request);
-        $statement->execute();
-
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $result = array_filter($appointments, function ($v, $k) {
+            return empty($v['user_id']);
+        }, ARRAY_FILTER_USE_BOTH);
 
         return (array) $result;
     }
@@ -514,15 +535,11 @@ class Database
      */
     public function getAppointmentsForASpecialty(int $id): ?array
     {
-        $request = 'SELECT a.id "appoint_id", a.date_time, d.id "doctor_id", d.firstname, d.lastname, s.name FROM appointments a 
-                    LEFT JOIN doctors d ON a.doctorid = d.id LEFT JOIN specialties s ON d.specialty_id = s.id 
-                    WHERE userid IS NULL AND s.id = :id';
+        $appointments = $this->getAppointments();
 
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':id', $id);
-        $statement->execute();
-
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $result = array_filter($appointments, function ($v, $k) use ($id) {
+            return $v['specialty_id'] == $id;
+        }, ARRAY_FILTER_USE_BOTH);
 
         return (array) $result;
     }
