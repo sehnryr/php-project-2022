@@ -10,6 +10,6 @@ $('#search').click(() => {
     if($('#spe').val() == "" && $('#nom').val() == ""){
         $('#search_form').append('<div class="alert alert-warning" role="alert">Veuillez remplir soit le nom ou choisir une spécialité!</div>');
     }else{
-        window.open('search.html?spe='+$('#spe').val()+'&nom='+$('#nom').val()+'&ou='+$('#ou').val());
+        window.location.href = 'search.html?spe='+$('#spe').val()+'&nom='+$('#nom').val()+'&ou='+$('#ou').val();
     }
 });
