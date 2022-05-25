@@ -32,7 +32,6 @@ $.ajax("api.php/appointments", {
     method: "GET"
 }).done((data) => {
     data.forEach(appointment => {
-        console.log(appointment);
         $('#resultField').append('<div class="card m-1" style="width: 18rem;">'+
         '<div class="card-body">'+
           '<h5 class="card-title">'+ appointment['firstname'] + ' '+ appointment['lastname'] +'</h5>'+
